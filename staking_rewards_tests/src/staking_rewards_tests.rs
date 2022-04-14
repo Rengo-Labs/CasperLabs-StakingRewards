@@ -78,15 +78,6 @@ fn balance_of() {
     println!("{:?}",v);
 }
 #[test]
-fn last_time_reward_applicable() {
-    let (_, owner,instance,proxy) = deploy();
-    let proxy = STAKINGREWARDSInstance::contract_instance(proxy);
-    proxy.last_time_reward_applicable(owner);
-    //let v1:U256 = instance.query_named_key("result".to_string());
-    // let v:U256 = proxy.result();
-    // println!("{:?}",v);
-}
-#[test]
 fn reward_per_token() {
     let (_, owner,instance,proxy) = deploy();
     let proxy = STAKINGREWARDSInstance::contract_instance(proxy);
@@ -106,15 +97,6 @@ fn earned() {
     //let v1:U256 = instance.query_named_key("result".to_string());
     let v:U256 = proxy.result();
     println!("{:?}",v);
-}
-#[test]
-fn stake_with_permit() {
-    let (_, owner,instance,_) = deploy();
-    let instance = STAKINGREWARDSInstance::contract_instance(instance);
-    let amount:U256 = 2000.into();
-    instance.stake_with_permit(owner,amount,10.into(),"".to_string(),"".to_string());
-    //let v1:U256 = instance.query_named_key("result".to_string());
-    
 }
 #[test]
 fn stake() {
@@ -141,15 +123,7 @@ fn get_reward() {
     instance.get_reward(owner);
     //let v1:U256 = instance.query_named_key("result".to_string());
 }
-#[test]
-fn exit() {
-    let (_, owner,instance,_) = deploy();
-    let instance = STAKINGREWARDSInstance::contract_instance(instance);
-    let amount:U256 = 2000.into();
-    instance.stake(owner,amount);
-    instance.exit(owner);
-    //let v1:U256 = instance.query_named_key("result".to_string());
-}
+
 #[test]
 fn notify_reward_amount() {
     let (_, owner,instance,_) = deploy();

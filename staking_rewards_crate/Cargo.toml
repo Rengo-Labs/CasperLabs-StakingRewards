@@ -1,0 +1,17 @@
+[package]
+name = "staking_rewards_crate"
+version = "0.2.0"
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+casper-contract = "= 1.4.3"
+casper-types = "= 1.4.6"
+contract-utils = { path = "../utils/contract-utils" }
+erc20_crate = { path = "../erc20_crate"}
+rewards_distribution_recipient_crate = {path = "../rewards_distribution_recipient_crate"}
+reentrancy_guard_crate = {path = "../reentrancy_guard_crate"}
+staking_rewards_utils = {path = "../utils/staking_rewards_utils"}
+hex = { version = "0.4.3", default-features = false }
+cryptoxide = "0.3.3"

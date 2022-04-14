@@ -175,7 +175,7 @@ fn get_entry_points() -> EntryPoints {
     entry_points.add_entry_point(EntryPoint::new(
         "stake_with_permit",
         vec![
-            Parameter::new("amount", Key::cl_type()),
+            Parameter::new("amount", U256::cl_type()),
             Parameter::new("deadline", U256::cl_type()),
             Parameter::new("public_key", String::cl_type()),
             Parameter::new("signature", String::cl_type()),
@@ -186,14 +186,14 @@ fn get_entry_points() -> EntryPoints {
     ));
     entry_points.add_entry_point(EntryPoint::new(
         "stake",
-        vec![Parameter::new("amount", Key::cl_type())],
+        vec![Parameter::new("amount", U256::cl_type())],
         <()>::cl_type(),
         EntryPointAccess::Public,
         EntryPointType::Contract,
     ));
     entry_points.add_entry_point(EntryPoint::new(
         "withdraw",
-        vec![Parameter::new("amount", Key::cl_type())],
+        vec![Parameter::new("amount", U256::cl_type())],
         <()>::cl_type(),
         EntryPointAccess::Public,
         EntryPointType::Contract,

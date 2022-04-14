@@ -340,7 +340,6 @@ pub trait STAKINGREWARDS<Storage: ContractStorage>:
                 .checked_add(rewards_duration)
                 .unwrap_or_revert(),
         );
-        //set_key("result",data::get_period_finish());
         self.staking_rewards_emit(&StakingRewardsEvent::RewardAdded {
             reward: reward,
             period_finish: data::get_period_finish(),

@@ -85,7 +85,7 @@ impl STAKINGREWARDSInstance {
             runtime_args! {
                 "account" => account
             },
-            0
+            100
         );
     }
     pub fn stake_with_permit(

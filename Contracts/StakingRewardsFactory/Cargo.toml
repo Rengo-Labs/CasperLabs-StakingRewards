@@ -1,0 +1,18 @@
+[workspace]
+
+members = [
+  "staking_rewards",
+  "ownable_crate",
+  "staking_rewards_factory",
+  "staking_rewards_factory_tests",
+  "staking_rewards_factory_crate",
+  "staking_rewards_crate",
+  "erc20_crate",
+  "reentrancy_guard_crate",
+  "rewards_distribution_recipient_crate",
+  "erc20"
+]
+
+[profile.release]
+codegen-units = 1
+lto = true

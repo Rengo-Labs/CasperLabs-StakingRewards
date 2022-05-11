@@ -1,0 +1,18 @@
+[package]
+name = "staking_rewards_utils"
+version = "0.1.0"
+edition = "2018"
+authors = ["Muhammad Saad Majeed<saad.majeed@scytalelabs.com>"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+casper-contract = "1.4.3"
+casper-types = "1.4.4"
+casper_types_derive = "0.1.0"
+contract-utils = {path = "../contract-utils"}
+renvm-sig = "0.1.1"
+hex = "0.4.3"
+
+[features]
+default = ["casper-contract/std", "casper-types/std", "casper-contract/test-support"]

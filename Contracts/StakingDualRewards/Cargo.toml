@@ -1,0 +1,18 @@
+[workspace]
+
+members = [
+  "pausable_crate",
+  "erc20_crate",
+  "erc20",
+  "owned_crate",
+  "reentrancy_guard_crate",
+  "staking_dual_rewards",
+  "staking_dual_rewards_crate",
+  "dual_rewards_distribution_recipient_crate",
+  "staking_dual_rewards_tests",
+  "test_contract",
+]
+
+[profile.release]
+codegen-units = 1
+lto = true

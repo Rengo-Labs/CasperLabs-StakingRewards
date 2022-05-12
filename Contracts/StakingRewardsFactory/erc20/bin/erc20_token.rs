@@ -42,6 +42,7 @@ impl Token {
             name,
             symbol,
             decimals,
+            initial_supply,
             domain_separator,
             permit_type_hash,
             Key::from(contract_hash),

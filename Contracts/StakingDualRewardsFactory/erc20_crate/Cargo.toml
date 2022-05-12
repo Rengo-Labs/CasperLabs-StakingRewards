@@ -7,7 +7,7 @@ edition = "2018"
 
 [dependencies]
 casper-contract = "1.4.4"
-casper-types = "=1.5.0"
+casper-types = "1.5.0"
 contract-utils = { path = "../utils/contract-utils" }
 staking_rewards_utils = { path = "../utils/staking_rewards_utils" }
 

@@ -1,5 +1,5 @@
 [package]
-authors = ["Muhammad Saad Majeed <saad.majeed@scytalelabs.com>"]
+authors = ["Muhammad Adrees <muhammad.adrees@scytalelabs.com>"]
 edition = "2018"
 name = "erc20"
 version = "0.1.0"
@@ -8,7 +8,6 @@ version = "0.1.0"
 casper-contract = "=1.4.3"
 casper-types = "=1.4.6"
 contract-utils = { path = "../utils/contract-utils" }
-staking_rewards_utils = { path = "../utils/staking_rewards_utils" }
 erc20_crate = { path = "../erc20_crate" }
 cryptoxide = "0.3.3"
 hex = { version = "0.4.3", default-features = false }

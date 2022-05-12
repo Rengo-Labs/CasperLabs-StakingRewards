@@ -1,9 +1,10 @@
-use alloc::string::String;
-
-use casper_contract::unwrap_or_revert::UnwrapOrRevert;
-use casper_types::{ContractPackageHash, Key, U256};
-use contract_utils::{get_key, set_key, Dict};
 use staking_rewards_utils::commons::key_names::*;
+use alloc::{string::{String, ToString}, collections::BTreeMap, vec::Vec};
+
+use casper_contract::{unwrap_or_revert::UnwrapOrRevert, contract_api::{runtime::get_call_stack, storage}};
+use casper_types::{ContractPackageHash, Key, U256, system::CallStackElement, URef};
+use contract_utils::{get_key, set_key, Dict, key_to_str};
+use crate::event::ERC20Event;
 
 pub struct Balances {
     dict: Dict,
@@ -21,11 +22,11 @@ impl Balances {
     }
 
     pub fn get(&self, owner: &Key) -> U256 {
-        self.dict.get_by_key(owner).unwrap_or_default()
+        self.dict.get(&key_to_str(owner)).unwrap_or_default()
     }
 
     pub fn set(&self, owner: &Key, value: U256) {
-        self.dict.set_by_key(owner, value);
+        self.dict.set(&key_to_str(owner), value);
     }
 }
 
@@ -45,11 +46,11 @@ impl Nonces {
     }
 
     pub fn get(&self, owner: &Key) -> U256 {
-        self.dict.get_by_key(owner).unwrap_or_default()
+        self.dict.get(&key_to_str(owner)).unwrap_or_default()
     }
 
     pub fn set(&self, owner: &Key, value: U256) {
-        self.dict.set_by_key(owner, value);
+        self.dict.set(&key_to_str(owner), value);
     }
 }
 
@@ -109,14 +110,6 @@ pub fn set_total_supply(total_supply: U256) {
     set_key(TOTAL_SUPPLY, total_supply);
 }
 
-pub fn set_hash(contract_hash: Key) {
-    set_key(SELF_CONTRACT_HASH, contract_hash);
-}
-
-pub fn get_hash() -> Key {
-    get_key(SELF_CONTRACT_HASH).unwrap_or_revert()
-}
-
 pub fn set_domain_separator(domain_separator: String) {
     set_key(DOMAIN_SEPARATOR, domain_separator);
 }
@@ -132,10 +125,100 @@ pub fn set_permit_type_hash(permit_type_hash: String) {
 pub fn get_permit_type_hash() -> String {
     get_key(PERMIT_TYPE_HASH).unwrap_or_revert()
 }
+pub fn set_hash(contract_hash: Key) {
+    set_key(SELF_CONTRACT_HASH, contract_hash);
+}
+
+pub fn get_hash() -> Key {
+    get_key(SELF_CONTRACT_HASH).unwrap_or_revert()
+}
 pub fn set_package_hash(package_hash: ContractPackageHash) {
     set_key(SELF_PACKAGE_HASH, package_hash);
 }
 
 pub fn get_package_hash() -> ContractPackageHash {
     get_key(SELF_PACKAGE_HASH).unwrap_or_revert()
+}
+
+pub fn contract_package_hash() -> ContractPackageHash {
+    let call_stacks = get_call_stack();
+    let last_entry = call_stacks.last().unwrap_or_revert();
+    let package_hash: Option<ContractPackageHash> = match last_entry {
+        CallStackElement::StoredContract {
+            contract_package_hash,
+            contract_hash: _,
+        } => Some(*contract_package_hash),
+        _ => None,
+    };
+    package_hash.unwrap_or_revert()
+}
+
+pub fn emit(event: &ERC20Event) {
+    let mut events = Vec::new();
+    let package = contract_package_hash();
+    match event {
+        ERC20Event::Mint {
+            recipient,
+            token_ids,
+        } => {
+            for token_id in token_ids {
+                let mut param = BTreeMap::new();
+                param.insert(SELF_PACKAGE_HASH, package.to_string());
+                param.insert("event_type", "erc20_mint_remove_one".to_string());
+                param.insert("recipient", recipient.to_string());
+                param.insert("token_id", token_id.to_string());
+                events.push(param);
+            }
+        }
+        ERC20Event::Burn { owner, token_ids } => {
+            for token_id in token_ids {
+                let mut param = BTreeMap::new();
+                param.insert(SELF_PACKAGE_HASH, package.to_string());
+                param.insert("event_type", "erc20_burn_remove_one".to_string());
+                param.insert("owner", owner.to_string());
+                param.insert("token_id", token_id.to_string());
+                events.push(param);
+            }
+        }
+        ERC20Event::Approve {
+            owner,
+            spender,
+            token_ids,
+        } => {
+            for token_id in token_ids {
+                let mut param = BTreeMap::new();
+                param.insert(SELF_PACKAGE_HASH, package.to_string());
+                param.insert("event_type", "erc20_approve_token".to_string());
+                param.insert("owner", owner.to_string());
+                param.insert("spender", spender.to_string());
+                param.insert("token_id", token_id.to_string());
+                events.push(param);
+            }
+        }
+        ERC20Event::Transfer {
+            sender,
+            recipient,
+            token_ids,
+        } => {
+            for token_id in token_ids {
+                let mut param = BTreeMap::new();
+                param.insert(SELF_PACKAGE_HASH, package.to_string());
+                param.insert("event_type", "erc20_transfer_token".to_string());
+                param.insert("sender", sender.to_string());
+                param.insert("recipient", recipient.to_string());
+                param.insert("token_id", token_id.to_string());
+                events.push(param);
+            }
+        }
+        ERC20Event::MetadataUpdate { token_id } => {
+            let mut param = BTreeMap::new();
+            param.insert(SELF_PACKAGE_HASH, package.to_string());
+            param.insert("event_type", "erc20_metadata_update".to_string());
+            param.insert("token_id", token_id.to_string());
+            events.push(param);
+        }
+    };
+    for param in events {
+        let _: URef = storage::new_uref(param);
+    }
 }

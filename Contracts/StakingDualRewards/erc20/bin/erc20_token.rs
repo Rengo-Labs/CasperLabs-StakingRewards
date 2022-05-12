@@ -42,6 +42,7 @@ impl Token {
             name,
             symbol,
             decimals,
+            initial_supply,
             domain_separator,
             permit_type_hash,
             Key::from(contract_hash),
@@ -498,13 +499,11 @@ fn get_entry_points() -> EntryPoints {
 
 #[no_mangle]
 fn call() {
-
     // Contract name must be same for all new versions of the contracts
     let contract_name: alloc::string::String = runtime::get_named_arg("contract_name");
 
     // If this is the first deployment
     if !runtime::has_key(&format!("{}_package_hash", contract_name)) {
-    
         // Build new package with initial a first version of the contract.
         let (package_hash, access_token) = storage::create_contract_package_at_hash();
         let (contract_hash, _) =
@@ -569,16 +568,17 @@ fn call() {
             &format!("{}_package_access_token", contract_name),
             access_token.into(),
         );
-    }
-    else {          // this is a contract upgrade
-        let package_hash: ContractPackageHash = runtime::get_key(&format!("{}_package_hash", contract_name))
-                                                            .unwrap_or_revert()
-                                                            .into_hash()
-                                                            .unwrap()
-                                                            .into();
+    } else {
+        // this is a contract upgrade
+        let package_hash: ContractPackageHash =
+            runtime::get_key(&format!("{}_package_hash", contract_name))
+                .unwrap_or_revert()
+                .into_hash()
+                .unwrap()
+                .into();
 
         let (contract_hash, _): (ContractHash, _) =
-        storage::add_contract_version(package_hash, get_entry_points(), Default::default());
+            storage::add_contract_version(package_hash, get_entry_points(), Default::default());
 
         // update contract hash
         runtime::put_key(

@@ -1,15 +1,19 @@
 use crate::alloc::string::ToString;
-use crate::data::{self, Balances, UserRewardPerTokenAPaid, RewardsB, RewardsA, UserRewardPerTokenBPaid};
+use crate::data::{
+    self, Balances, RewardsA, RewardsB, UserRewardPerTokenAPaid, UserRewardPerTokenBPaid,
+};
 use alloc::collections::BTreeMap;
 use alloc::{string::String, vec::Vec};
 use casper_contract::contract_api::storage;
 use casper_contract::{contract_api::runtime, unwrap_or_revert::UnwrapOrRevert};
 use casper_types::{runtime_args, ApiError, ContractPackageHash, Key, RuntimeArgs, URef, U256};
 use contract_utils::{ContractContext, ContractStorage};
-use owned_crate::{self,data as owned,OWNED};
-use dual_rewards_distribution_recipient_crate::{self,data as dual,DUALREWARDSDISTRIBUTIONRECIPIENT};
-use reentrancy_guard_crate::REENTRANCYGUARD;
+use dual_rewards_distribution_recipient_crate::{
+    self, data as dual, DUALREWARDSDISTRIBUTIONRECIPIENT,
+};
+use owned_crate::{self, data as owned, OWNED};
 use pausable_crate::PAUSABLE;
+use reentrancy_guard_crate::REENTRANCYGUARD;
 //Errors
 #[repr(u16)]
 pub enum Error {
@@ -26,7 +30,7 @@ pub enum Error {
     // Provided reward-B too high
     RewardBTooHigh = 5,
     //Cannot withdraw the staking token
-    CannotWithdrawStakingToken =6,
+    CannotWithdrawStakingToken = 6,
 }
 
 impl From<Error> for ApiError {
@@ -36,11 +40,28 @@ impl From<Error> for ApiError {
 }
 //Events
 pub enum StakingDualRewardsEvent {
-    Staked { user: Key, amount: U256 },
-    Withdraw { user: Key, amount: U256 },
-    Recovered { user: Key, amount: U256 },
-    RewardPaid { user: Key,reward_token:Key, reward: U256 },
-    RewardAdded { reward_a: U256,reward_b: U256, period_finish: U256 },
+    Staked {
+        user: Key,
+        amount: U256,
+    },
+    Withdraw {
+        user: Key,
+        amount: U256,
+    },
+    Recovered {
+        user: Key,
+        amount: U256,
+    },
+    RewardPaid {
+        user: Key,
+        reward_token: Key,
+        reward: U256,
+    },
+    RewardAdded {
+        reward_a: U256,
+        reward_b: U256,
+        period_finish: U256,
+    },
 }
 
 impl StakingDualRewardsEvent {
@@ -49,18 +70,37 @@ impl StakingDualRewardsEvent {
             StakingDualRewardsEvent::Staked { user: _, amount: _ } => "Staked",
             StakingDualRewardsEvent::Withdraw { user: _, amount: _ } => "Withdraw",
             StakingDualRewardsEvent::Recovered { user: _, amount: _ } => "Recovered",
-            StakingDualRewardsEvent::RewardPaid { user: _,reward_token:_, reward: _ } => "Reward Paid",
+            StakingDualRewardsEvent::RewardPaid {
+                user: _,
+                reward_token: _,
+                reward: _,
+            } => "Reward Paid",
             StakingDualRewardsEvent::RewardAdded {
                 reward_a: _,
-                reward_b:_,
+                reward_b: _,
                 period_finish: _,
             } => "Reward Added",
         }
         .to_string()
     }
 }
-pub trait STAKINGDUALREWARDS<Storage: ContractStorage>: ContractContext<Storage> + OWNED<Storage> + REENTRANCYGUARD<Storage> +PAUSABLE<Storage> +DUALREWARDSDISTRIBUTIONRECIPIENT<Storage>{
-    fn init(&mut self,owner:Key,dual_rewards_distribution:Key,rewards_token_a:Key,rewards_token_b:Key,staking_token:Key,contract_hash: Key, package_hash: ContractPackageHash) {
+pub trait STAKINGDUALREWARDS<Storage: ContractStorage>:
+    ContractContext<Storage>
+    + OWNED<Storage>
+    + REENTRANCYGUARD<Storage>
+    + PAUSABLE<Storage>
+    + DUALREWARDSDISTRIBUTIONRECIPIENT<Storage>
+{
+    fn init(
+        &mut self,
+        owner: Key,
+        dual_rewards_distribution: Key,
+        rewards_token_a: Key,
+        rewards_token_b: Key,
+        staking_token: Key,
+        contract_hash: Key,
+        package_hash: ContractPackageHash,
+    ) {
         OWNED::init(self, owner, contract_hash, package_hash);
         PAUSABLE::init(self, contract_hash, package_hash);
         REENTRANCYGUARD::init(self);
@@ -78,7 +118,6 @@ pub trait STAKINGDUALREWARDS<Storage: ContractStorage>: ContractContext<Storage>
         data::set_staking_token(staking_token);
         data::set_hash(contract_hash);
         data::set_package_hash(package_hash);
-        
     }
     fn total_supply(&self) -> U256 {
         return data::get_total_supply();
@@ -258,7 +297,7 @@ pub trait STAKINGDUALREWARDS<Storage: ContractStorage>: ContractContext<Storage>
             }
             self.staking_dual_rewards_emit(&StakingDualRewardsEvent::RewardPaid {
                 user: self.get_caller(),
-                reward_token:data::get_rewards_token_a(),
+                reward_token: data::get_rewards_token_a(),
                 reward: reward_amount_a,
             });
         }
@@ -287,13 +326,12 @@ pub trait STAKINGDUALREWARDS<Storage: ContractStorage>: ContractContext<Storage>
                 reward: reward_amount_b,
             });
         }
-        
     }
     fn exit(&mut self) {
         self.withdraw(Balances::instance().get(&self.get_caller()));
         self.get_reward();
     }
-    fn notify_reward_amount(&mut self, reward_a: U256,reward_b:U256, rewards_duration: U256) {
+    fn notify_reward_amount(&mut self, reward_a: U256, reward_b: U256, rewards_duration: U256) {
         DUALREWARDSDISTRIBUTIONRECIPIENT::only_dual_rewards_distribution(self);
         self.update_reward(data::ZERO_ADDRESS());
         let blocktime: u64 = runtime::get_blocktime().into();
@@ -316,7 +354,7 @@ pub trait STAKINGDUALREWARDS<Storage: ContractStorage>: ContractContext<Storage>
                 .checked_mul(data::get_reward_rate_a())
                 .unwrap_or_revert();
             data::set_reward_rate_a(
-                data::get_reward_rate_a()
+                reward_a
                     .checked_add(left_over_a)
                     .unwrap_or_revert()
                     .checked_div(rewards_duration)
@@ -326,7 +364,7 @@ pub trait STAKINGDUALREWARDS<Storage: ContractStorage>: ContractContext<Storage>
                 .checked_mul(data::get_reward_rate_b())
                 .unwrap_or_revert();
             data::set_reward_rate_b(
-                data::get_reward_rate_b()
+                reward_b
                     .checked_add(left_over_b)
                     .unwrap_or_revert()
                     .checked_div(rewards_duration)
@@ -349,7 +387,9 @@ pub trait STAKINGDUALREWARDS<Storage: ContractStorage>: ContractContext<Storage>
                 "owner" => Key::from(data::get_package_hash())
             },
         );
-        if !(data::get_reward_rate_a() <= balance_a.checked_div(rewards_duration).unwrap_or_revert()) {
+        if !(data::get_reward_rate_a()
+            <= balance_a.checked_div(rewards_duration).unwrap_or_revert())
+        {
             runtime::revert(ApiError::from(Error::RewardATooHigh));
         }
         let balance_b: U256 = runtime::call_versioned_contract(
@@ -363,7 +403,9 @@ pub trait STAKINGDUALREWARDS<Storage: ContractStorage>: ContractContext<Storage>
                 "owner" => Key::from(data::get_package_hash())
             },
         );
-        if !(data::get_reward_rate_b() <= balance_b.checked_div(rewards_duration).unwrap_or_revert()) {
+        if !(data::get_reward_rate_b()
+            <= balance_b.checked_div(rewards_duration).unwrap_or_revert())
+        {
             runtime::revert(ApiError::from(Error::RewardBTooHigh));
         }
         data::set_last_update_time(U256::from(blocktime));
@@ -378,16 +420,13 @@ pub trait STAKINGDUALREWARDS<Storage: ContractStorage>: ContractContext<Storage>
             period_finish: data::get_period_finish(),
         });
     }
-    fn recover_erc20(&mut self,token_address:Key,token_amount:U256){
+    fn recover_erc20(&mut self, token_address: Key, token_amount: U256) {
         OWNED::only_owner(self);
-        if !(token_address != data::get_staking_token()){
+        if !(token_address != data::get_staking_token()) {
             runtime::revert(ApiError::from(Error::CannotWithdrawStakingToken));
         }
         let ret: Result<(), u32> = runtime::call_versioned_contract(
-            token_address
-                .into_hash()
-                .unwrap_or_revert()
-                .into(),
+            token_address.into_hash().unwrap_or_revert().into(),
             None,
             "transfer",
             runtime_args! {
@@ -410,11 +449,13 @@ pub trait STAKINGDUALREWARDS<Storage: ContractStorage>: ContractContext<Storage>
         data::set_last_update_time(self.last_time_reward_applicable());
         if account != data::ZERO_ADDRESS() {
             RewardsA::instance().set(&account, self.earned_a(account));
-            UserRewardPerTokenAPaid::instance().set(&account, data::get_reward_per_token_a_stored());
+            UserRewardPerTokenAPaid::instance()
+                .set(&account, data::get_reward_per_token_a_stored());
         }
         if account != data::ZERO_ADDRESS() {
             RewardsB::instance().set(&account, self.earned_b(account));
-            UserRewardPerTokenBPaid::instance().set(&account, data::get_reward_per_token_b_stored());
+            UserRewardPerTokenBPaid::instance()
+                .set(&account, data::get_reward_per_token_b_stored());
         }
     }
     fn staking_dual_rewards_emit(&mut self, staking_dual_rewards_event: &StakingDualRewardsEvent) {
@@ -437,7 +478,11 @@ pub trait STAKINGDUALREWARDS<Storage: ContractStorage>: ContractContext<Storage>
                 event.insert("amount", amount.to_string());
                 events.push(event);
             }
-            StakingDualRewardsEvent::RewardPaid { user,reward_token, reward } => {
+            StakingDualRewardsEvent::RewardPaid {
+                user,
+                reward_token,
+                reward,
+            } => {
                 let mut event = BTreeMap::new();
                 event.insert("contract_package_hash", package.to_string());
                 event.insert("event_type", staking_dual_rewards_event.type_name());

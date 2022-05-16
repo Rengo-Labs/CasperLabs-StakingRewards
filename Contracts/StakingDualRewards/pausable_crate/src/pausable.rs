@@ -2,11 +2,11 @@ use crate::alloc::string::ToString;
 use crate::data::{self};
 use alloc::collections::BTreeMap;
 use alloc::{string::String, vec::Vec};
+use casper_contract::contract_api::runtime;
 use casper_contract::contract_api::storage;
-use casper_contract::{contract_api::runtime};
 use casper_types::{ApiError, ContractPackageHash, Key, URef, U256};
 use contract_utils::{ContractContext, ContractStorage};
-use owned_crate::{self,data as owned,OWNED};
+use owned_crate::{self, data as owned, OWNED};
 //Errors
 #[repr(u16)]
 pub enum Error {
@@ -34,24 +34,23 @@ impl PausableEvent {
         .to_string()
     }
 }
-pub trait PAUSABLE<Storage: ContractStorage>: ContractContext<Storage> + OWNED<Storage>{
-    fn init(&mut self,contract_hash: Key, package_hash: ContractPackageHash) {
+pub trait PAUSABLE<Storage: ContractStorage>: ContractContext<Storage> + OWNED<Storage> {
+    fn init(&mut self, contract_hash: Key, package_hash: ContractPackageHash) {
         OWNED::init(self, self.get_caller(), contract_hash, package_hash);
         if !(owned::get_owner() != data::ZERO_ADDRESS()) {
             runtime::revert(ApiError::from(Error::OwnerMustSet));
         }
         data::set_hash(contract_hash);
         data::set_package_hash(package_hash);
-        
     }
     fn set_paused(&mut self, paused: bool) {
         OWNED::only_owner(self);
-        if paused == data::get_paused(){
+        if paused == data::get_paused() {
             return;
         }
         data::set_paused(paused);
-        let blocktime: u64 = runtime::get_blocktime().into();        
-        if paused{
+        let blocktime: u64 = runtime::get_blocktime().into();
+        if paused {
             data::set_last_pause_time(U256::from(blocktime));
         }
         self.pausable_emit(&PausableEvent::PauseChanged { is_paused: paused });

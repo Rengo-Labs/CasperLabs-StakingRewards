@@ -18,7 +18,6 @@ impl From<Error> for ApiError {
 pub trait REENTRANCYGUARD<Storage: ContractStorage>: ContractContext<Storage> {
     fn init(&self) {
         data::set_guard_counter(1.into());
-      
     }
     fn non_reentrant(&self) {
         data::set_guard_counter(

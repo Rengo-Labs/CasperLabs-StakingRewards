@@ -2,7 +2,7 @@
 #![no_std]
 
 extern crate alloc;
-use alloc::{ collections::BTreeSet, format, vec};
+use alloc::{collections::BTreeSet, format, vec};
 use casper_contract::{
     contract_api::{runtime, storage},
     unwrap_or_revert::UnwrapOrRevert,
@@ -12,11 +12,11 @@ use casper_types::{
     EntryPointAccess, EntryPointType, EntryPoints, Group, Key, Parameter, RuntimeArgs, URef, U256,
 };
 use contract_utils::{ContractContext, OnChainContractStorage};
-use pausable_crate::{self,PAUSABLE};
-use reentrancy_guard_crate::REENTRANCYGUARD;
-use staking_dual_rewards_crate::{self,STAKINGDUALREWARDS};
 use dual_rewards_distribution_recipient_crate::DUALREWARDSDISTRIBUTIONRECIPIENT;
-use owned_crate::{self,OWNED};
+use owned_crate::{self, OWNED};
+use pausable_crate::{self, PAUSABLE};
+use reentrancy_guard_crate::REENTRANCYGUARD;
+use staking_dual_rewards_crate::{self, STAKINGDUALREWARDS};
 #[derive(Default)]
 struct StakingDualRewards(OnChainContractStorage);
 
@@ -33,11 +33,25 @@ impl PAUSABLE<OnChainContractStorage> for StakingDualRewards {}
 
 impl StakingDualRewards {
     fn constructor(
-        &mut self,owner:Key,dual_rewards_distribution:Key,rewards_token_a:Key,rewards_token_b:Key,staking_token:Key,
+        &mut self,
+        owner: Key,
+        dual_rewards_distribution: Key,
+        rewards_token_a: Key,
+        rewards_token_b: Key,
+        staking_token: Key,
         contract_hash: ContractHash,
         package_hash: ContractPackageHash,
     ) {
-        STAKINGDUALREWARDS::init(self, owner,dual_rewards_distribution,rewards_token_a,rewards_token_b,staking_token,Key::from(contract_hash), package_hash)
+        STAKINGDUALREWARDS::init(
+            self,
+            owner,
+            dual_rewards_distribution,
+            rewards_token_a,
+            rewards_token_b,
+            staking_token,
+            Key::from(contract_hash),
+            package_hash,
+        )
     }
 }
 
@@ -50,13 +64,21 @@ fn constructor() {
     let staking_token: Key = runtime::get_named_arg("staking_token");
     let contract_hash: ContractHash = runtime::get_named_arg("contract_hash");
     let package_hash: ContractPackageHash = runtime::get_named_arg("package_hash");
-    StakingDualRewards::default().constructor(owner,dual_rewards_distribution,rewards_token_a,rewards_token_b,staking_token,contract_hash, package_hash);
+    StakingDualRewards::default().constructor(
+        owner,
+        dual_rewards_distribution,
+        rewards_token_a,
+        rewards_token_b,
+        staking_token,
+        contract_hash,
+        package_hash,
+    );
 }
 
 #[no_mangle]
 fn set_paused() {
     let paused: bool = runtime::get_named_arg("paused");
-    PAUSABLE::set_paused(&mut StakingDualRewards::default(),paused);
+    PAUSABLE::set_paused(&mut StakingDualRewards::default(), paused);
 }
 #[no_mangle]
 fn nominate_new_owner() {
@@ -128,13 +150,13 @@ fn notify_reward_amount() {
     let reward_a: U256 = runtime::get_named_arg("reward_a");
     let reward_b: U256 = runtime::get_named_arg("reward_b");
     let rewards_duration: U256 = runtime::get_named_arg("rewards_duration");
-    StakingDualRewards::default().notify_reward_amount(reward_a,reward_b, rewards_duration);
+    StakingDualRewards::default().notify_reward_amount(reward_a, reward_b, rewards_duration);
 }
 #[no_mangle]
 fn recover_erc20() {
     let token_address: Key = runtime::get_named_arg("token_address");
     let token_amount: U256 = runtime::get_named_arg("token_amount");
-    StakingDualRewards::default().recover_erc20(token_address,token_amount);
+    StakingDualRewards::default().recover_erc20(token_address, token_amount);
 }
 //Entry Points
 fn get_entry_points() -> EntryPoints {

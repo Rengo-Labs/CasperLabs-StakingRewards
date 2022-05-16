@@ -30,4 +30,3 @@ pub fn set_guard_counter(guard_counter: U256) {
 pub fn get_guard_counter() -> U256 {
     get_key(GUARD_COUNTER).unwrap_or_revert()
 }
-

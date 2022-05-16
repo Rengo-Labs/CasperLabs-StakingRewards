@@ -6,7 +6,7 @@ pub mod data;
 mod erc20;
 pub mod event;
 
-pub use erc20::{Error,ERC20};
+pub use erc20::{Error, ERC20};
 
 use alloc::{collections::BTreeMap, string::String};
 use casper_types::U256;

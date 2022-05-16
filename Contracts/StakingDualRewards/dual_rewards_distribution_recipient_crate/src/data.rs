@@ -2,7 +2,7 @@ use casper_contract::{
     contract_api::{runtime, storage},
     unwrap_or_revert::UnwrapOrRevert,
 };
-use casper_types::{bytesrepr::ToBytes, CLTyped,Key};
+use casper_types::{bytesrepr::ToBytes, CLTyped, Key};
 use contract_utils::{get_key, set_key};
 use core::convert::TryInto;
 
@@ -30,4 +30,3 @@ pub fn set_dual_rewards_distribution(dual_rewards_distribution: Key) {
 pub fn get_dual_rewards_distribution() -> Key {
     get_key(DUALREWARDSDISTRIBUTION).unwrap_or_revert()
 }
-

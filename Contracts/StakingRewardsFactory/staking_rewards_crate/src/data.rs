@@ -15,7 +15,7 @@ pub const REWARD_RATE: &str = "reward_rate";
 pub const LAST_UPDATE_TIME: &str = "last_update_time";
 pub const REWARD_PER_TOKEN_STORED: &str = "reward_per_token_stored";
 pub const TOTAL_SUPPLY: &str = "total_supply";
-pub const TEN_E_NINE:u128 = 1000000000;
+pub const TEN_E_NINE: u128 = 1000000000;
 pub const RESULT: &str = "result";
 //Zero Address
 pub fn ZERO_ADDRESS() -> Key {

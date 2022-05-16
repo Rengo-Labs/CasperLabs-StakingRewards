@@ -6,9 +6,7 @@ use casper_contract::{
     contract_api::{runtime, storage},
     unwrap_or_revert::UnwrapOrRevert,
 };
-use casper_types::{
-    runtime_args, ContractHash, ContractPackageHash,Key, RuntimeArgs, URef
-};
+use casper_types::{runtime_args, ContractHash, ContractPackageHash, Key, RuntimeArgs, URef};
 use staking_rewards_crate::{self, entry_point};
 //Entry Points
 

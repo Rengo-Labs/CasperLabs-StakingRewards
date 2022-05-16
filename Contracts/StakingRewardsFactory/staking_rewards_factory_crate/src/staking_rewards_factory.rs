@@ -1,17 +1,15 @@
 use crate::alloc::string::ToString;
-use crate::data::{self,StakingTokens};
-use alloc::collections::{BTreeSet};
+use crate::data::{self, StakingTokens};
+use alloc::collections::BTreeSet;
 use alloc::format;
 use alloc::{string::String, vec::Vec};
 use casper_contract::contract_api::storage;
 use casper_contract::{contract_api::runtime, unwrap_or_revert::UnwrapOrRevert};
 use casper_types::bytesrepr::{FromBytes, ToBytes};
-use casper_types::{
-    runtime_args, ApiError, ContractPackageHash, Key, RuntimeArgs, URef, U256,
-};
+use casper_types::{runtime_args, ApiError, ContractPackageHash, Key, RuntimeArgs, URef, U256};
 use contract_utils::{ContractContext, ContractStorage};
 use ownable_crate::{self, OWNABLE};
-use staking_rewards_crate::{self,entry_point, STAKINGREWARDS};
+use staking_rewards_crate::{self, entry_point, STAKINGREWARDS};
 //Errors
 //#[derive(Default)]
 #[repr(u16)]

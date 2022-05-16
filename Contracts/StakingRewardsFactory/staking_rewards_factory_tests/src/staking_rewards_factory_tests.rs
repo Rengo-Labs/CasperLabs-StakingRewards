@@ -3,7 +3,7 @@ use casper_types::{
     account::AccountHash, runtime_args, ContractPackageHash, Key, RuntimeArgs, U256,
 };
 use test_env::{TestContract, TestEnv};
-pub const TEN_E_NINE:u128 = 1000000000;
+pub const TEN_E_NINE: u128 = 1000000000;
 fn deploy_erc20(env: &TestEnv, owner: AccountHash) -> TestContract {
     TestContract::new(
         &env,
@@ -61,8 +61,18 @@ fn test_update() {
     let instance = STAKINGREWARDSFACTORYInstance::contract_instance(instance);
     let erc20 = deploy_erc20(&env, owner);
     let staking_token = Key::Hash(erc20.package_hash());
-    instance.deploy(owner, staking_token, U256::from(TEN_E_NINE * 10), 100.into());
-    instance.update(owner, staking_token, U256::from(TEN_E_NINE * 10), 100.into());
+    instance.deploy(
+        owner,
+        staking_token,
+        U256::from(TEN_E_NINE * 10),
+        100.into(),
+    );
+    instance.update(
+        owner,
+        staking_token,
+        U256::from(TEN_E_NINE * 10),
+        100.into(),
+    );
 }
 #[test]
 fn test_notify_reward_amounts() {
@@ -70,7 +80,12 @@ fn test_notify_reward_amounts() {
     let instance = STAKINGREWARDSFACTORYInstance::contract_instance(instance);
     let erc20 = deploy_erc20(&env, owner);
     let staking_token = Key::Hash(erc20.package_hash());
-    instance.deploy(owner, staking_token, U256::from(TEN_E_NINE * 10), 100.into());
+    instance.deploy(
+        owner,
+        staking_token,
+        U256::from(TEN_E_NINE * 10),
+        100.into(),
+    );
     instance.notify_reward_amounts(owner);
 }
 #[test]
@@ -79,7 +94,12 @@ fn test_notify_reward_amount() {
     let instance = STAKINGREWARDSFACTORYInstance::contract_instance(instance);
     let erc20 = deploy_erc20(&env, owner);
     let staking_token = Key::Hash(erc20.package_hash());
-    instance.deploy(owner, staking_token, U256::from(TEN_E_NINE * 10), 100.into());
+    instance.deploy(
+        owner,
+        staking_token,
+        U256::from(TEN_E_NINE * 10),
+        100.into(),
+    );
     instance.notify_reward_amount(owner, staking_token);
 }
 #[test]
@@ -90,4 +110,3 @@ fn test_pull_extra_tokens() {
     let staking_token = Key::Hash(erc20.package_hash());
     instance.pull_extra_tokens(owner, staking_token, U256::from(TEN_E_NINE * 100));
 }
-

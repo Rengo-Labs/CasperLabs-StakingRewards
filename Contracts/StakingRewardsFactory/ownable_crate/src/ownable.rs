@@ -2,9 +2,9 @@ use crate::alloc::string::ToString;
 use crate::data::{self};
 use alloc::collections::BTreeMap;
 use alloc::{string::String, vec::Vec};
+use casper_contract::contract_api::runtime;
 use casper_contract::contract_api::storage;
-use casper_contract::{contract_api::runtime};
-use casper_types::{ ApiError, ContractPackageHash, Key, URef};
+use casper_types::{ApiError, ContractPackageHash, Key, URef};
 use contract_utils::{ContractContext, ContractStorage};
 
 //Errors

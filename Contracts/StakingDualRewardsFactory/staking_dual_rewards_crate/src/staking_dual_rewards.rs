@@ -317,7 +317,7 @@ pub trait STAKINGDUALREWARDS<Storage: ContractStorage>: ContractContext<Storage>
                 .checked_mul(data::get_reward_rate_a())
                 .unwrap_or_revert();
             data::set_reward_rate_a(
-                data::get_reward_rate_a()
+                reward_a
                     .checked_add(left_over_a)
                     .unwrap_or_revert()
                     .checked_div(rewards_duration)
@@ -327,7 +327,7 @@ pub trait STAKINGDUALREWARDS<Storage: ContractStorage>: ContractContext<Storage>
                 .checked_mul(data::get_reward_rate_b())
                 .unwrap_or_revert();
             data::set_reward_rate_b(
-                data::get_reward_rate_b()
+                reward_b
                     .checked_add(left_over_b)
                     .unwrap_or_revert()
                     .checked_div(rewards_duration)

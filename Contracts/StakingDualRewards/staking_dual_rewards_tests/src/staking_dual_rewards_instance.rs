@@ -1,9 +1,8 @@
 use std::collections::BTreeMap;
 
 use casper_types::{
-    account::AccountHash,
-    bytesrepr::{FromBytes},
-    runtime_args, CLTyped, ContractPackageHash, Key, RuntimeArgs, U256,
+    account::AccountHash, bytesrepr::FromBytes, runtime_args, CLTyped, ContractPackageHash, Key,
+    RuntimeArgs, U256,
 };
 use test_env::{TestContract, TestEnv};
 
@@ -22,8 +21,8 @@ impl STAKINGDUALREWARDSInstance {
         sender: AccountHash,
         owner: Key,
         dual_rewards_distribution: Key,
-        rewards_token_a:Key,
-        rewards_token_b:Key,
+        rewards_token_a: Key,
+        rewards_token_b: Key,
         staking_token: Key,
     ) -> TestContract {
         TestContract::new(
@@ -58,7 +57,7 @@ impl STAKINGDUALREWARDSInstance {
     }
     pub fn total_supply(&self, sender: AccountHash) {
         self.0
-            .call_contract(sender, "total_supply", runtime_args! {},0);
+            .call_contract(sender, "total_supply", runtime_args! {}, 0);
     }
     pub fn balance_of(&self, sender: AccountHash, account: Key) {
         self.0.call_contract(
@@ -67,20 +66,20 @@ impl STAKINGDUALREWARDSInstance {
             runtime_args! {
                 "account" => account
             },
-            0
+            0,
         );
     }
     pub fn last_time_reward_applicable(&self, sender: AccountHash) {
         self.0
-            .call_contract(sender, "last_time_reward_applicable", runtime_args! {},200);
+            .call_contract(sender, "last_time_reward_applicable", runtime_args! {}, 200);
     }
     pub fn reward_per_token_a(&self, sender: AccountHash) {
         self.0
-            .call_contract(sender, "reward_per_token_a", runtime_args! {},600);
+            .call_contract(sender, "reward_per_token_a", runtime_args! {}, 600);
     }
     pub fn reward_per_token_b(&self, sender: AccountHash) {
         self.0
-            .call_contract(sender, "reward_per_token_b", runtime_args! {},600);
+            .call_contract(sender, "reward_per_token_b", runtime_args! {}, 600);
     }
     pub fn earned_a(&self, sender: AccountHash, account: Key) {
         self.0.call_contract(
@@ -89,7 +88,7 @@ impl STAKINGDUALREWARDSInstance {
             runtime_args! {
                 "account" => account
             },
-            500
+            500,
         );
     }
     pub fn earned_b(&self, sender: AccountHash, account: Key) {
@@ -99,7 +98,7 @@ impl STAKINGDUALREWARDSInstance {
             runtime_args! {
                 "account" => account
             },
-            500
+            500,
         );
     }
     pub fn stake(&self, sender: AccountHash, amount: U256) {
@@ -109,7 +108,7 @@ impl STAKINGDUALREWARDSInstance {
             runtime_args! {
                 "amount" => amount
             },
-            0
+            0,
         );
     }
     pub fn withdraw(&self, sender: AccountHash, amount: U256) {
@@ -119,16 +118,23 @@ impl STAKINGDUALREWARDSInstance {
             runtime_args! {
                 "amount" => amount
             },
-            0
+            0,
         );
     }
     pub fn get_reward(&self, sender: AccountHash) {
-        self.0.call_contract(sender, "get_reward", runtime_args! {},0);
+        self.0
+            .call_contract(sender, "get_reward", runtime_args! {}, 0);
     }
     pub fn exit(&self, sender: AccountHash) {
-        self.0.call_contract(sender, "exit", runtime_args! {},0);
+        self.0.call_contract(sender, "exit", runtime_args! {}, 0);
     }
-    pub fn notify_reward_amount(&self, sender: AccountHash, reward_a: U256,reward_b:U256, rewards_duration: U256) {
+    pub fn notify_reward_amount(
+        &self,
+        sender: AccountHash,
+        reward_a: U256,
+        reward_b: U256,
+        rewards_duration: U256,
+    ) {
         self.0.call_contract(
             sender,
             "notify_reward_amount",
@@ -137,10 +143,10 @@ impl STAKINGDUALREWARDSInstance {
                 "reward_b" => reward_b,
                 "rewards_duration" => rewards_duration,
             },
-            50
+            50,
         );
     }
-    pub fn recover_erc20(&self, sender: AccountHash, token_address: Key,token_amount:U256) {
+    pub fn recover_erc20(&self, sender: AccountHash, token_address: Key, token_amount: U256) {
         self.0.call_contract(
             sender,
             "recover_erc20",
@@ -148,7 +154,7 @@ impl STAKINGDUALREWARDSInstance {
                 "token_address" => token_address,
                 "token_amount" => token_amount,
             },
-            0
+            0,
         );
     }
     // Result methods

@@ -2,17 +2,16 @@
 #![no_std]
 
 extern crate alloc;
-use alloc::{ collections::BTreeSet, format, vec};
+use alloc::{collections::BTreeSet, format, vec};
 
 use casper_contract::{
-    contract_api::{ runtime, storage},
+    contract_api::{runtime, storage},
     unwrap_or_revert::UnwrapOrRevert,
 };
 use casper_types::{
     contracts::{ContractHash, ContractPackageHash},
-    runtime_args,
-    CLType, CLTyped, EntryPoint, EntryPointAccess, EntryPointType, EntryPoints, Group,
-    Key, Parameter, RuntimeArgs, URef, U256,
+    runtime_args, CLType, CLTyped, EntryPoint, EntryPointAccess, EntryPointType, EntryPoints,
+    Group, Key, Parameter, RuntimeArgs, URef, U256,
 };
 pub mod mappings;
 
@@ -32,7 +31,8 @@ fn constructor() {
 
 #[no_mangle]
 fn total_supply() {
-    let staking_rewards_address: ContractPackageHash = mappings::get_key(&mappings::staking_dual_rewards_key());
+    let staking_rewards_address: ContractPackageHash =
+        mappings::get_key(&mappings::staking_dual_rewards_key());
     let ret: U256 = runtime::call_versioned_contract(
         staking_rewards_address,
         None,
@@ -43,7 +43,8 @@ fn total_supply() {
 }
 #[no_mangle]
 fn balance_of() {
-    let staking_rewards_address: ContractPackageHash = mappings::get_key(&mappings::staking_dual_rewards_key());
+    let staking_rewards_address: ContractPackageHash =
+        mappings::get_key(&mappings::staking_dual_rewards_key());
     let account: Key = runtime::get_named_arg("account");
     let ret: U256 = runtime::call_versioned_contract(
         staking_rewards_address,
@@ -57,7 +58,8 @@ fn balance_of() {
 }
 #[no_mangle]
 fn last_time_reward_applicable() {
-    let staking_rewards_address: ContractPackageHash = mappings::get_key(&mappings::staking_dual_rewards_key());
+    let staking_rewards_address: ContractPackageHash =
+        mappings::get_key(&mappings::staking_dual_rewards_key());
     let ret: U256 = runtime::call_versioned_contract(
         staking_rewards_address,
         None,
@@ -68,7 +70,8 @@ fn last_time_reward_applicable() {
 }
 #[no_mangle]
 fn reward_per_token_a() {
-    let staking_rewards_address: ContractPackageHash = mappings::get_key(&mappings::staking_dual_rewards_key());
+    let staking_rewards_address: ContractPackageHash =
+        mappings::get_key(&mappings::staking_dual_rewards_key());
     let ret: U256 = runtime::call_versioned_contract(
         staking_rewards_address,
         None,
@@ -79,7 +82,8 @@ fn reward_per_token_a() {
 }
 #[no_mangle]
 fn reward_per_token_b() {
-    let staking_rewards_address: ContractPackageHash = mappings::get_key(&mappings::staking_dual_rewards_key());
+    let staking_rewards_address: ContractPackageHash =
+        mappings::get_key(&mappings::staking_dual_rewards_key());
     let ret: U256 = runtime::call_versioned_contract(
         staking_rewards_address,
         None,
@@ -90,7 +94,8 @@ fn reward_per_token_b() {
 }
 #[no_mangle]
 fn earned_a() {
-    let staking_rewards_address: ContractPackageHash = mappings::get_key(&mappings::staking_dual_rewards_key());
+    let staking_rewards_address: ContractPackageHash =
+        mappings::get_key(&mappings::staking_dual_rewards_key());
     let account: Key = runtime::get_named_arg("account");
     let ret: U256 = runtime::call_versioned_contract(
         staking_rewards_address,
@@ -104,7 +109,8 @@ fn earned_a() {
 }
 #[no_mangle]
 fn earned_b() {
-    let staking_rewards_address: ContractPackageHash = mappings::get_key(&mappings::staking_dual_rewards_key());
+    let staking_rewards_address: ContractPackageHash =
+        mappings::get_key(&mappings::staking_dual_rewards_key());
     let account: Key = runtime::get_named_arg("account");
     let ret: U256 = runtime::call_versioned_contract(
         staking_rewards_address,

@@ -1,10 +1,17 @@
+use alloc::{
+    collections::BTreeMap,
+    string::{String, ToString},
+    vec::Vec,
+};
 use staking_rewards_utils::commons::key_names::*;
-use alloc::{string::{String, ToString}, collections::BTreeMap, vec::Vec};
 
-use casper_contract::{unwrap_or_revert::UnwrapOrRevert, contract_api::{runtime::get_call_stack, storage}};
-use casper_types::{ContractPackageHash, Key, U256, system::CallStackElement, URef};
-use contract_utils::{get_key, set_key, Dict, key_to_str};
 use crate::event::ERC20Event;
+use casper_contract::{
+    contract_api::{runtime::get_call_stack, storage},
+    unwrap_or_revert::UnwrapOrRevert,
+};
+use casper_types::{system::CallStackElement, ContractPackageHash, Key, URef, U256};
+use contract_utils::{get_key, key_to_str, set_key, Dict};
 
 pub struct Balances {
     dict: Dict,

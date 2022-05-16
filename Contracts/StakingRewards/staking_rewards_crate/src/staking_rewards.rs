@@ -311,7 +311,7 @@ pub trait STAKINGREWARDS<Storage: ContractStorage>:
                 .checked_mul(data::get_reward_rate())
                 .unwrap_or_revert();
             data::set_reward_rate(
-                data::get_reward_rate()
+                reward
                     .checked_add(left_over)
                     .unwrap_or_revert()
                     .checked_div(rewards_duration)

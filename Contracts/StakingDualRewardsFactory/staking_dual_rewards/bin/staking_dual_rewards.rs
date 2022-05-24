@@ -127,6 +127,37 @@ fn earned_b() {
     runtime::ret(CLValue::from_t(ret).unwrap_or_revert());
 }
 #[no_mangle]
+fn total_supply_js_client() {
+    let ret: U256 = StakingDualRewards::default().total_supply();
+}
+#[no_mangle]
+fn balance_of_js_client() {
+    let account: Key = runtime::get_named_arg("account");
+    let ret: U256 = StakingDualRewards::default().balance_of(account);
+}
+#[no_mangle]
+fn last_time_reward_applicable_js_client() {
+    let ret: U256 = StakingDualRewards::default().last_time_reward_applicable();
+}
+#[no_mangle]
+fn reward_per_token_a_js_client() {
+    let ret: U256 = StakingDualRewards::default().reward_per_token_a();
+}
+#[no_mangle]
+fn reward_per_token_b_js_client() {
+    let ret: U256 = StakingDualRewards::default().reward_per_token_b();
+}
+#[no_mangle]
+fn earned_a_js_client() {
+    let account: Key = runtime::get_named_arg("account");
+    let ret: U256 = StakingDualRewards::default().earned_a(account);
+}
+#[no_mangle]
+fn earned_b_js_client() {
+    let account: Key = runtime::get_named_arg("account");
+    let ret: U256 = StakingDualRewards::default().earned_b(account);
+}
+#[no_mangle]
 fn stake() {
     let amount: U256 = runtime::get_named_arg("amount");
     StakingDualRewards::default().stake(amount);
@@ -145,7 +176,7 @@ fn exit() {
     StakingDualRewards::default().exit();
 }
 #[no_mangle]
-fn notify_reward_amount() {
+fn notify_reward_amount_sdr() {
     let reward_a: U256 = runtime::get_named_arg("reward_a");
     let reward_b: U256 = runtime::get_named_arg("reward_b");
     let rewards_duration: U256 = runtime::get_named_arg("rewards_duration");

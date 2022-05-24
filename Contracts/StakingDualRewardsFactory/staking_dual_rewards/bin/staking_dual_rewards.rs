@@ -8,8 +8,155 @@ use casper_contract::{
     unwrap_or_revert::UnwrapOrRevert,
 };
 use casper_types::{
-    runtime_args, ContractHash, ContractPackageHash,Key,RuntimeArgs, URef};
-use staking_dual_rewards_crate::{entry_points};
+    runtime_args, ContractHash, ContractPackageHash,Key,RuntimeArgs, URef, U256, CLValue};
+use staking_dual_rewards_crate::{entry_points,STAKINGDUALREWARDS};
+use contract_utils::{ContractContext, OnChainContractStorage};
+use dual_rewards_distribution_recipient_crate::DUALREWARDSDISTRIBUTIONRECIPIENT;
+use owned_crate::{self, OWNED};
+use pausable_crate::{self, PAUSABLE};
+use reentrancy_guard_crate::REENTRANCYGUARD;
+#[derive(Default)]
+struct StakingDualRewards(OnChainContractStorage);
+
+impl ContractContext<OnChainContractStorage> for StakingDualRewards {
+    fn storage(&self) -> &OnChainContractStorage {
+        &self.0
+    }
+}
+impl REENTRANCYGUARD<OnChainContractStorage> for StakingDualRewards {}
+impl DUALREWARDSDISTRIBUTIONRECIPIENT<OnChainContractStorage> for StakingDualRewards {}
+impl STAKINGDUALREWARDS<OnChainContractStorage> for StakingDualRewards {}
+impl OWNED<OnChainContractStorage> for StakingDualRewards {}
+impl PAUSABLE<OnChainContractStorage> for StakingDualRewards {}
+
+impl StakingDualRewards {
+    fn constructor(
+        &mut self,
+        owner: Key,
+        dual_rewards_distribution: Key,
+        rewards_token_a: Key,
+        rewards_token_b: Key,
+        staking_token: Key,
+        contract_hash: ContractHash,
+        package_hash: ContractPackageHash,
+    ) {
+        STAKINGDUALREWARDS::init(
+            self,
+            owner,
+            dual_rewards_distribution,
+            rewards_token_a,
+            rewards_token_b,
+            staking_token,
+            Key::from(contract_hash),
+            package_hash,
+        )
+    }
+}
+
+
+#[no_mangle]
+fn constructor() {
+    let owner: Key = runtime::get_named_arg("owner");
+    let dual_rewards_distribution: Key = runtime::get_named_arg("dual_rewards_distribution");
+    let rewards_token_a: Key = runtime::get_named_arg("rewards_token_a");
+    let rewards_token_b: Key = runtime::get_named_arg("rewards_token_b");
+    let staking_token: Key = runtime::get_named_arg("staking_token");
+    let contract_hash: ContractHash = runtime::get_named_arg("contract_hash");
+    let package_hash: ContractPackageHash = runtime::get_named_arg("package_hash");
+    StakingDualRewards::default().constructor(
+        owner,
+        dual_rewards_distribution,
+        rewards_token_a,
+        rewards_token_b,
+        staking_token,
+        contract_hash,
+        package_hash,
+    );
+}
+
+#[no_mangle]
+fn set_paused() {
+    let paused: bool = runtime::get_named_arg("paused");
+    PAUSABLE::set_paused(&mut StakingDualRewards::default(), paused);
+}
+#[no_mangle]
+fn nominate_new_owner() {
+    let owner: Key = runtime::get_named_arg("owner");
+    OWNED::nominate_new_owner(&mut StakingDualRewards::default(), owner);
+}
+#[no_mangle]
+fn accept_ownership() {
+    OWNED::accept_ownership(&mut StakingDualRewards::default());
+}
+#[no_mangle]
+fn total_supply() {
+    let ret: U256 = StakingDualRewards::default().total_supply();
+    runtime::ret(CLValue::from_t(ret).unwrap_or_revert());
+}
+#[no_mangle]
+fn balance_of() {
+    let account: Key = runtime::get_named_arg("account");
+    let ret: U256 = StakingDualRewards::default().balance_of(account);
+    runtime::ret(CLValue::from_t(ret).unwrap_or_revert());
+}
+#[no_mangle]
+fn last_time_reward_applicable() {
+    let ret: U256 = StakingDualRewards::default().last_time_reward_applicable();
+    runtime::ret(CLValue::from_t(ret).unwrap_or_revert());
+}
+#[no_mangle]
+fn reward_per_token_a() {
+    let ret: U256 = StakingDualRewards::default().reward_per_token_a();
+    runtime::ret(CLValue::from_t(ret).unwrap_or_revert());
+}
+#[no_mangle]
+fn reward_per_token_b() {
+    let ret: U256 = StakingDualRewards::default().reward_per_token_b();
+    runtime::ret(CLValue::from_t(ret).unwrap_or_revert());
+}
+#[no_mangle]
+fn earned_a() {
+    let account: Key = runtime::get_named_arg("account");
+    let ret: U256 = StakingDualRewards::default().earned_a(account);
+    runtime::ret(CLValue::from_t(ret).unwrap_or_revert());
+}
+#[no_mangle]
+fn earned_b() {
+    let account: Key = runtime::get_named_arg("account");
+    let ret: U256 = StakingDualRewards::default().earned_b(account);
+    runtime::ret(CLValue::from_t(ret).unwrap_or_revert());
+}
+#[no_mangle]
+fn stake() {
+    let amount: U256 = runtime::get_named_arg("amount");
+    StakingDualRewards::default().stake(amount);
+}
+#[no_mangle]
+fn withdraw() {
+    let amount: U256 = runtime::get_named_arg("amount");
+    StakingDualRewards::default().withdraw(amount);
+}
+#[no_mangle]
+fn get_reward() {
+    StakingDualRewards::default().get_reward();
+}
+#[no_mangle]
+fn exit() {
+    StakingDualRewards::default().exit();
+}
+#[no_mangle]
+fn notify_reward_amount() {
+    let reward_a: U256 = runtime::get_named_arg("reward_a");
+    let reward_b: U256 = runtime::get_named_arg("reward_b");
+    let rewards_duration: U256 = runtime::get_named_arg("rewards_duration");
+    StakingDualRewards::default().notify_reward_amount(reward_a, reward_b, rewards_duration);
+}
+#[no_mangle]
+fn recover_erc20() {
+    let token_address: Key = runtime::get_named_arg("token_address");
+    let token_amount: U256 = runtime::get_named_arg("token_amount");
+    StakingDualRewards::default().recover_erc20(token_address, token_amount);
+}
 
 #[no_mangle]
 fn call() {

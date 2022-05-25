@@ -22,13 +22,14 @@ import { concat } from "@ethersproject/bytes";
 import * as utils from "./utils";
 import { RecipientType, IPendingDeploy } from "./types";
 import {createRecipientAddress } from "./utils";
+import { consoleTestResultHandler } from "tslint/lib/test";
 
 class STAKINGREWARDSFACTORYClient {
   private contractName: string = "stakingrewardsfactory";
   private contractHash: string= "stakingrewardsfactory";
   private contractPackageHash: string= "stakingrewardsfactory";
   private namedKeys: {
-    balances:string,
+    balances:string
   };
 
   constructor(
@@ -76,12 +77,16 @@ class STAKINGREWARDSFACTORYClient {
   }
 
   public async totalSupply() {
-    const result = await contractSimpleGetter(
-      this.nodeAddress,
-      this.contractHash,
-      ["total_supply"]
-    );
-    return result.value();
+    try {
+      const result = await contractSimpleGetter(
+        this.nodeAddress,
+        this.contractHash,
+        ["total_supply"]
+      );
+      return result.value();
+    } catch (error) {
+      return "0";
+    }
   }
 
   public async balanceOf(account: string) {
@@ -209,6 +214,14 @@ class STAKINGREWARDSFACTORYClient {
     } else {
       throw Error("Invalid Deploy");
     }
+  }
+  public async getStakingDualRewardsContractHash() {
+    const result = await contractSimpleGetter(
+      this.nodeAddress,
+      this.contractHash,
+      ["StakingDualRewards0_contract"]
+    );
+    return result.value();
   }
 
   public async update(
@@ -403,187 +416,292 @@ class STAKINGREWARDSFACTORYClient {
     }
   }
 
-  public async lastTimeRewardApplicableJsClient(
-    keys: Keys.AsymmetricKey,
-    paymentAmount: string
-  ) {
-		
-    const runtimeArgs = RuntimeArgs.fromMap({});
+  public async periodFinish() {
+    try{
 
-    const deployHash = await contractCall({
-      chainName: this.chainName,
-      contractHash: this.contractHash,
-      entryPoint: "last_time_reward_applicable_Jsclient",
-      keys,
-      nodeAddress: this.nodeAddress,
-      paymentAmount,
-      runtimeArgs,
-    });
-
-    if (deployHash !== null) {
-      
-      return deployHash;
-    } else {
-      throw Error("Invalid Deploy");
-    }
-  }
-  public async lastTimeRewardApplicable() {
-    const result = await contractSimpleGetter(
-      this.nodeAddress,
-      this.contractHash,
-      ["last_time_reward_applicable"]
-    );
-    return result.value();
-  }
-
-  public async rewardPerTokenAJsClient(
-    keys: Keys.AsymmetricKey,
-    paymentAmount: string
-  ) {
-		
-    const runtimeArgs = RuntimeArgs.fromMap({});
-
-    const deployHash = await contractCall({
-      chainName: this.chainName,
-      contractHash: this.contractHash,
-      entryPoint: "reward_per_token_a_Jsclient",
-      keys,
-      nodeAddress: this.nodeAddress,
-      paymentAmount,
-      runtimeArgs,
-    });
-
-    if (deployHash !== null) {
-      
-      return deployHash;
-    } else {
-      throw Error("Invalid Deploy");
+      const result = await contractSimpleGetter(
+        this.nodeAddress,
+        this.contractHash,
+        ["period_finish"]
+      );
+      return result.value();
+    } catch (error) {
+      return "0";
     }
   }
 
-  public async rewardPerTokenA() {
-    const result = await contractSimpleGetter(
-      this.nodeAddress,
-      this.contractHash,
-      ["reward_per_token_a"]
-    );
-    return result.value();
-  }
-
-  public async rewardPerTokenBJsClient(
-    keys: Keys.AsymmetricKey,
-    paymentAmount: string
+  public async lastTimeRewardApplicable(
+    blockTimeStampInMiliSeconds:number,
   ) {
-		
-    const runtimeArgs = RuntimeArgs.fromMap({});
 
-    const deployHash = await contractCall({
-      chainName: this.chainName,
-      contractHash: this.contractHash,
-      entryPoint: "reward_per_token_b_Jsclient",
-      keys,
-      nodeAddress: this.nodeAddress,
-      paymentAmount,
-      runtimeArgs,
-    });
+    let periodFinishResult= await this.periodFinish();
+    console.log("periodFinishResult: ",`${periodFinishResult}`);
 
-    if (deployHash !== null) {
-      
-      return deployHash;
-    } else {
-      throw Error("Invalid Deploy");
+    if(blockTimeStampInMiliSeconds < periodFinishResult)
+    {
+      return blockTimeStampInMiliSeconds;
+    }
+    else{
+      return periodFinishResult;
+    }
+
+  }
+  
+  public async getRewardPerTokenAStored() {
+    try{
+
+      const result = await contractSimpleGetter(
+        this.nodeAddress,
+        this.contractHash,
+        ["reward_per_token_a_stored"]
+      );
+      return result.value();
+    } catch (error) {
+      return "0";
     }
   }
 
-  public async rewardPerTokenB() {
-    const result = await contractSimpleGetter(
-      this.nodeAddress,
-      this.contractHash,
-      ["reward_per_token_b"]
-    );
-    return result.value();
+  public async getLastUpdateTime() {
+    try{
+
+      const result = await contractSimpleGetter(
+        this.nodeAddress,
+        this.contractHash,
+        ["last_update_time"]
+      );
+      return result.value();
+    } catch (error) {
+      return "0";
+    }
   }
 
-  public async earnedAJsClient(
-    keys: Keys.AsymmetricKey,
+  public async getRewardRateA() {
+    try{
+
+      const result = await contractSimpleGetter(
+        this.nodeAddress,
+        this.contractHash,
+        ["reward_rate_a"]
+      );
+      return result.value();
+    } catch (error) {
+      return "0";
+    }
+  }
+
+  public async rewardPerTokenA(
+    blockTimeStampInMiliSeconds:number,
+  ) {
+    
+    let totalSupplyResult = await this.totalSupply();
+    console.log("totalSupply: ",`${totalSupplyResult}`);
+
+    if(totalSupplyResult == 0)
+    {
+      return await this.getRewardPerTokenAStored();
+    }
+    else{
+      let getRewardPerTokenAStoredResult =await this.getRewardPerTokenAStored();
+      let lastTimeRewardApplicableResult =await this.lastTimeRewardApplicable(blockTimeStampInMiliSeconds);
+      let getLastUpdateTimeResult =await this.getLastUpdateTime();
+      let getRewardRateAResult =await this.getRewardRateA();
+      let TenENine = 1000000000;
+      let totalSupplyResult =await this.totalSupply();
+
+      console.log("getRewardPerTokenAStoredResult: ",`${getRewardPerTokenAStoredResult}`);
+      console.log("lastTimeRewardApplicableResult: ",`${lastTimeRewardApplicableResult}`);
+      console.log("getLastUpdateTimeResult: ",`${getLastUpdateTimeResult}`);
+      console.log("getRewardRateAResult: ",`${getRewardRateAResult}`);
+      console.log("totalSupplyResult: ",`${totalSupplyResult}`);
+
+      if(lastTimeRewardApplicableResult > getLastUpdateTimeResult)
+      {
+        return getRewardPerTokenAStoredResult + ((((lastTimeRewardApplicableResult-getLastUpdateTimeResult)*getRewardRateAResult)*TenENine)/totalSupplyResult);
+      }
+      else{
+        return getRewardPerTokenAStoredResult + ((((getLastUpdateTimeResult-lastTimeRewardApplicableResult)*getRewardRateAResult)*TenENine)/totalSupplyResult);
+      }
+      
+    }
+  }
+
+  public async getRewardPerTokenBStored() {
+    try{
+
+      const result = await contractSimpleGetter(
+        this.nodeAddress,
+        this.contractHash,
+        ["reward_per_token_b_stored"]
+      );
+      return result.value();
+    } catch (error) {
+      return "0";
+    }
+  }
+
+  public async getRewardRateB() {
+    try{
+
+      const result = await contractSimpleGetter(
+        this.nodeAddress,
+        this.contractHash,
+        ["reward_rate_b"]
+      );
+      return result.value();
+    } catch (error) {
+      return "0";
+    }
+  }
+
+  public async rewardPerTokenB(
+    blockTimeStampInMiliSeconds:number,
+  ) {
+    
+    let totalSupplyResult = await this.totalSupply();
+    console.log("totalSupply: ",`${totalSupplyResult}`);
+
+    if(totalSupplyResult == 0)
+    {
+      return await this.getRewardPerTokenBStored();
+    }
+    else{
+      let getRewardPerTokenBStoredResult =await this.getRewardPerTokenBStored();
+      let lastTimeRewardApplicableResult =await this.lastTimeRewardApplicable(blockTimeStampInMiliSeconds);
+      let getLastUpdateTimeResult =await this.getLastUpdateTime();
+      let getRewardRateBResult =await this.getRewardRateB();
+      let TenENine = 1000000000;
+      let totalSupplyResult =await this.totalSupply();
+
+      console.log("getRewardPerTokenBStoredResult: ",`${getRewardPerTokenBStoredResult}`);
+      console.log("lastTimeRewardApplicableResult: ",`${lastTimeRewardApplicableResult}`);
+      console.log("getLastUpdateTimeResult: ",`${getLastUpdateTimeResult}`);
+      console.log("getRewardRateBResult: ",`${getRewardRateBResult}`);
+      console.log("totalSupplyResult: ",`${totalSupplyResult}`);
+
+      if(lastTimeRewardApplicableResult > getLastUpdateTimeResult)
+      {
+        return getRewardPerTokenBStoredResult + ((((lastTimeRewardApplicableResult-getLastUpdateTimeResult)*getRewardRateBResult)*TenENine)/totalSupplyResult);
+      }
+      else{
+        return getRewardPerTokenBStoredResult + ((((getLastUpdateTimeResult-lastTimeRewardApplicableResult)*getRewardRateBResult)*TenENine)/totalSupplyResult);
+      }
+      
+    }
+  }
+
+  public async userRewardPerTokenAPaid(account: string) {
+    try {
+      
+      const result = await utils.contractDictionaryGetter(
+        this.nodeAddress,
+        account,
+        "user_reward_per_token_a_paid"
+      );
+      const maybeValue = result.value().unwrap();
+      return maybeValue.value().toString();
+
+    } catch (error) {
+      return "0";
+    }
+    
+  }
+
+  public async rewardsA(account: string) {
+    try {
+      
+      const result = await utils.contractDictionaryGetter(
+        this.nodeAddress,
+        account,
+        "rewards_a"
+      );
+      const maybeValue = result.value().unwrap();
+      return maybeValue.value().toString();
+
+    } catch (error) {
+      return "0";
+    }
+    
+  }
+
+  public async earnedA(
     account: string,
-    paymentAmount: string
+    blockTimeStampInMiliSeconds:number,
   ) {
-		
-    const _account = new CLByteArray(
-			Uint8Array.from(Buffer.from(account, "hex"))
-		);
+		let balanceResult=await this.balanceOf(account);
+    let rewardPerTokenAResult=await this.rewardPerTokenA(blockTimeStampInMiliSeconds);
+    let userRewardPerTokenAPaidResult=await this.userRewardPerTokenAPaid(account);
+    let TenENine = 1000000000;
+    let rewardsAResult=await this.rewardsA(account);
 
-    const runtimeArgs = RuntimeArgs.fromMap({
-      account: utils.createRecipientAddress(_account)
-    });
+    console.log("balanceResult: ", `${balanceResult}`);
+    console.log("rewardPerTokenAResult: ", `${rewardPerTokenAResult}`);
+    console.log("userRewardPerTokenAPaidResult: ", `${userRewardPerTokenAPaidResult}`);
+    console.log("rewardsAResult: ", `${rewardsAResult}`);
 
-    const deployHash = await contractCall({
-      chainName: this.chainName,
-      contractHash: this.contractHash,
-      entryPoint: "earned_a_Jsclient",
-      keys,
-      nodeAddress: this.nodeAddress,
-      paymentAmount,
-      runtimeArgs,
-    });
-
-    if (deployHash !== null) {
-      
-      return deployHash;
-    } else {
-      throw Error("Invalid Deploy");
+    if(rewardPerTokenAResult > userRewardPerTokenAPaidResult)
+    {
+      return balanceResult*(((rewardPerTokenAResult-userRewardPerTokenAPaidResult)/TenENine)+rewardsAResult);
+    }
+    else{
+      return balanceResult*(((userRewardPerTokenAPaidResult-rewardPerTokenAResult)/TenENine)+rewardsAResult);
     }
   }
 
-  public async earnedA() {
-    const result = await contractSimpleGetter(
-      this.nodeAddress,
-      this.contractHash,
-      ["earned_a"]
-    );
-    return result.value();
+  public async userRewardPerTokenBPaid(account: string) {
+    try {
+      
+      const result = await utils.contractDictionaryGetter(
+        this.nodeAddress,
+        account,
+        "user_reward_per_token_b_paid"
+      );
+      const maybeValue = result.value().unwrap();
+      return maybeValue.value().toString();
+
+    } catch (error) {
+      return "0";
+    }
+    
+  }
+  public async rewardsB(account: string) {
+    try {
+      
+      const result = await utils.contractDictionaryGetter(
+        this.nodeAddress,
+        account,
+        "rewards_b"
+      );
+      const maybeValue = result.value().unwrap();
+      return maybeValue.value().toString();
+
+    } catch (error) {
+      return "0";
+    }
+    
   }
 
-  public async earnedBJsClient(
-    keys: Keys.AsymmetricKey,
+  public async earnedB(
     account: string,
-    paymentAmount: string
+    blockTimeStampInMiliSeconds:number,
   ) {
-		
-    const _account = new CLByteArray(
-			Uint8Array.from(Buffer.from(account, "hex"))
-		);
+		let balanceResult=await this.balanceOf(account);
+    let rewardPerTokenBResult=await this.rewardPerTokenB(blockTimeStampInMiliSeconds);
+    let userRewardPerTokenBPaidResult=await this.userRewardPerTokenBPaid(account);
+    let TenENine = 1000000000;
+    let rewardsBResult=await this.rewardsB(account);
 
-    const runtimeArgs = RuntimeArgs.fromMap({
-      account: utils.createRecipientAddress(_account)
-    });
+    console.log("balanceResult: ", `${balanceResult}`);
+    console.log("rewardPerTokenBResult: ", `${rewardPerTokenBResult}`);
+    console.log("userRewardPerTokenBPaidResult: ", `${userRewardPerTokenBPaidResult}`);
+    console.log("rewardsBResult: ", `${rewardsBResult}`);
 
-    const deployHash = await contractCall({
-      chainName: this.chainName,
-      contractHash: this.contractHash,
-      entryPoint: "earned_b_Jsclient",
-      keys,
-      nodeAddress: this.nodeAddress,
-      paymentAmount,
-      runtimeArgs,
-    });
-
-    if (deployHash !== null) {
-      
-      return deployHash;
-    } else {
-      throw Error("Invalid Deploy");
+    if(rewardPerTokenBResult > userRewardPerTokenBPaidResult)
+    {
+      return balanceResult*(((rewardPerTokenBResult-userRewardPerTokenBPaidResult)/TenENine)+rewardsBResult);
     }
-  }
-
-  public async earnedB() {
-    const result = await contractSimpleGetter(
-      this.nodeAddress,
-      this.contractHash,
-      ["earned_b"]
-    );
-    return result.value();
+    else{
+      return balanceResult*(((userRewardPerTokenBPaidResult-rewardPerTokenBResult)/TenENine)+rewardsBResult);
+    }
   }
 
   public async stake(
@@ -764,7 +882,7 @@ class STAKINGREWARDSFACTORYClient {
     }
   }
 
-  public async paused(
+  public async setPaused(
     keys: Keys.AsymmetricKey,
     paused:  boolean,
     paymentAmount: string
@@ -778,7 +896,7 @@ class STAKINGREWARDSFACTORYClient {
     const deployHash = await contractCall({
       chainName: this.chainName,
       contractHash: this.contractHash,
-      entryPoint: "paused",
+      entryPoint: "set_paused",
       keys,
       nodeAddress: this.nodeAddress,
       paymentAmount,

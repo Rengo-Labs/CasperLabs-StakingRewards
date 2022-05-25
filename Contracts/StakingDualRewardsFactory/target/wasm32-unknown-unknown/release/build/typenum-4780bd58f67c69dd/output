@@ -1,0 +1,2 @@
+cargo:rustc-env=TYPENUM_BUILD_CONSTS=/home/hammad/work/CaperLabs-QuickSwapCore-StakingRewards/Contracts/StakingDualRewardsFactory/target/wasm32-unknown-unknown/release/build/typenum-4780bd58f67c69dd/out/consts.rs
+cargo:rustc-env=TYPENUM_BUILD_OP=/home/hammad/work/CaperLabs-QuickSwapCore-StakingRewards/Contracts/StakingDualRewardsFactory/target/wasm32-unknown-unknown/release/build/typenum-4780bd58f67c69dd/out/op.rs

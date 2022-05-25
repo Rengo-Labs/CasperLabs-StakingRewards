@@ -14,19 +14,19 @@ use pausable_crate::PAUSABLE;
 #[repr(u16)]
 pub enum Error {
     //rewards tokens should be different
-    RewardsTokensSame = 0,
+    RewardsTokensSame = 11,
     //Cannot stake 0
-    CannotStake = 1,
+    CannotStake = 12,
     //Cannot Withdraw 0
-    CannotWithdraw = 2,
+    CannotWithdraw = 13,
     //Cannot reduce existing period
-    CannotReduce = 3,
+    CannotReduce = 14,
     // Provided reward-A too high
-    RewardATooHigh = 4,
+    RewardATooHigh = 15,
     // Provided reward-B too high
-    RewardBTooHigh = 5,
+    RewardBTooHigh = 16,
     //Cannot withdraw the staking token
-    CannotWithdrawStakingToken =6,
+    CannotWithdrawStakingToken =17,
 }
 
 impl From<Error> for ApiError {

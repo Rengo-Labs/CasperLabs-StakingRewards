@@ -14,19 +14,19 @@ use staking_dual_rewards_crate::{self,entry_points};
 #[repr(u16)]
 pub enum Error {
     //StakingRewardsFactory::constructor: genesis too soon
-    GenesisTooSoon = 0,
+    GenesisTooSoon = 18,
     //Invalid reward token(s)
-    InvalidTokens =1,
+    InvalidTokens =19,
     //StakingRewardsFactory::deploy: already deployed
-    StakingRewardsFactoryAlreadyDeploy = 2,
+    StakingRewardsFactoryAlreadyDeploy = 20,
     //StakingRewardsFactory::update: not deployed
-    StakingRewardsFactoryUpdateNotDeploy = 3,
+    StakingRewardsFactoryUpdateNotDeploy = 21,
     // StakingRewardsFactory::notifyRewardAmounts: called before any deploys
-    CalledBeforeAnyDeploys = 4,
+    CalledBeforeAnyDeploys = 22,
     // StakingRewardsFactory::notifyRewardAmount: not ready
-    NotifyRewardAmountNotReady= 5,
+    NotifyRewardAmountNotReady= 23,
     //StakingRewardsFactory::notifyRewardAmount: not deployed
-    NotifyRewardAmountNotDeploy=6,
+    NotifyRewardAmountNotDeploy=24,
 }
 
 impl From<Error> for ApiError {

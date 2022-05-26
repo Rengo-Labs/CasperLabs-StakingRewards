@@ -45,12 +45,12 @@ const test = async () => {
   await stakingdualrewards.setContractHash(STAKINGDUALREWARDS_CONTRACT!);
 
   //totalsupply
-  let totalSupply = await stakingdualrewards.totalSupply();
-  console.log(`... Total supply: ${totalSupply}`);
+  // let totalSupply = await stakingdualrewards.totalSupply();
+  // console.log(`... Total supply: ${totalSupply}`);
 
-  //balanceof
-  let balance = await stakingdualrewards.balanceOf("24a56544c522eca7fba93fb7a6cef83e086706fd87b2f344f5c3dad3603d11f1");
-  console.log(`... Balance: ${balance}`);
+  // //balanceof
+  // let balance = await stakingdualrewards.balanceOf("24a56544c522eca7fba93fb7a6cef83e086706fd87b2f344f5c3dad3603d11f1");
+  // console.log(`... Balance: ${balance}`);
 
   // //constructorSdr
   // const constructorSdrDeployHash = await stakingdualrewards.constructorSdr(
@@ -145,6 +145,17 @@ const test = async () => {
   // await getDeploy(NODE_ADDRESS!, exitDeployHash);
   // console.log("... exit called successfully");
 
+  // //paused
+  // const pausedDeployHash = await stakingdualrewards.setPaused(
+  //   KEYS,
+  //   true,
+  //   STAKINGDUALREWARDS_FUNCTIONS_PAYMENT_AMOUNT!
+  // );
+  // console.log("... paused deploy hash: ", pausedDeployHash);
+
+  // await getDeploy(NODE_ADDRESS!, pausedDeployHash);
+  // console.log("... paused called successfully");
+  
   // //notifyRewardAmountSdr
   // //Flow: Call stake first
   // const notifyRewardAmountSdrDeployHash = await stakingdualrewards.notifyRewardAmountSdr(
@@ -171,17 +182,6 @@ const test = async () => {
 
   // await getDeploy(NODE_ADDRESS!, recoverErc20DeployHash);
   // console.log("... recoverErc20 called successfully");
-
-  // //paused
-  // const pausedDeployHash = await stakingdualrewards.setPaused(
-  //   KEYS,
-  //   true,
-  //   STAKINGDUALREWARDS_FUNCTIONS_PAYMENT_AMOUNT!
-  // );
-  // console.log("... paused deploy hash: ", pausedDeployHash);
-
-  // await getDeploy(NODE_ADDRESS!, pausedDeployHash);
-  // console.log("... paused called successfully");
 
 };
 

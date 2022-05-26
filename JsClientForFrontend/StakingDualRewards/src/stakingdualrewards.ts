@@ -11,6 +11,7 @@ import {
   EventStream,
   Keys,
   RuntimeArgs,
+  CLAccountHash
 } from "casper-js-sdk";
 import { Some, None } from "ts-results";
 import * as blake from "blakejs";

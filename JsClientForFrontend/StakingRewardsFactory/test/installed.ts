@@ -36,10 +36,10 @@ const test = async () => {
 
   await stakingrewardsfactory.setContractHash(STAKINGREWARDSFACTORY_CONTRACT!);
 
-  // //nominateNewOwner
+  //nominateNewOwner
   // const nominateNewOwnerDeployHash = await stakingrewardsfactory.nominateNewOwner(
   //   KEYS,
-  //   "Key::Account(24a56544c522eca7fba93fb7a6cef83e086706fd87b2f344f5c3dad3603d11f1)",
+  //   "24a56544c522eca7fba93fb7a6cef83e086706fd87b2f344f5c3dad3603d11f1",
   //   STAKINGREWARDSFACTORY_FUNCTIONS_PAYMENT_AMOUNT!
   // );
   // console.log("... nominateNewOwner deploy hash: ", nominateNewOwnerDeployHash);
@@ -47,7 +47,7 @@ const test = async () => {
   // await getDeploy(NODE_ADDRESS!, nominateNewOwnerDeployHash);
   // console.log("... nominateNewOwner called successfully");
 
-  // //acceptOwnership
+  //acceptOwnership
   // const acceptOwnershipDeployHash = await stakingrewardsfactory.acceptOwnership(
   //   KEYS,
   //   STAKINGREWARDSFACTORY_FUNCTIONS_PAYMENT_AMOUNT!
@@ -74,6 +74,9 @@ const test = async () => {
   // await getDeploy(NODE_ADDRESS!, deployDeployHash);
   // console.log("... deploy called successfully");
 
+  // //getStakingDualRewardsData
+  // const getStakingDualRewardsData = await stakingrewardsfactory.getStakingDualRewardsContractHash(STAKING_TOKEN!);
+  // console.log("... getStakingDualRewardsData: ", `${getStakingDualRewardsData}`);
 
   // //update
   // //Flow: Call Deploy Function First

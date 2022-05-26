@@ -82,12 +82,8 @@ class STAKINGREWARDSFACTORYClient {
     paymentAmount: string
   ) {
 
-    const _owner = new CLByteArray(
-			Uint8Array.from(Buffer.from(owner, "hex"))
-		);
-
     const runtimeArgs = RuntimeArgs.fromMap({
-      owner: utils.createRecipientAddress(_owner),
+      owner: new CLKey(new CLAccountHash(Uint8Array.from(Buffer.from(owner, "hex")))),
     });
 
     const deployHash = await contractCall({
@@ -185,15 +181,22 @@ class STAKINGREWARDSFACTORYClient {
       throw Error("Invalid Deploy");
     }
   }
-  public async getStakingDualRewardsContractHash() {
-    const result = await contractSimpleGetter(
-      this.nodeAddress,
-      this.contractHash,
-      ["StakingDualRewards0_contract"]
-    );
-    return result.value();
-  }
+  public async getStakingDualRewardsContractHash(account: string) {
+    try {
+      
+      const result = await utils.contractDictionaryGetter(
+        this.nodeAddress,
+        account,
+        "staking_rewards_info"
+      );
+      const maybeValue = result.value().unwrap();
+      return maybeValue.value().toString();
 
+    } catch (error) {
+      return "0";
+    }
+    
+  }
   public async update(
     keys: Keys.AsymmetricKey,
     stakingToken:  string,

@@ -1,9 +1,10 @@
 {
-  "name": "StakingRewardsFactoryJsClientForFrontend",
+  "name": "StakingRewardsFactoryAndStakingDualRewardsJsClientForFrontend",
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "test:stakingrewardsfactoryinstalled": "ts-node StakingRewardsFactory/test/installed.ts"
+    "test:stakingrewardsfactoryinstalled": "ts-node StakingRewardsFactory/test/installed.ts",
+    "test:stakingdualrewardsinstalled" : "ts-node StakingDualRewards/test/installed.ts"
   },
   "engine": {
     "node": "16.14.0",

@@ -1,5 +1,0 @@
-/home/hammad/work/CaperLabs-QuickSwapCore-StakingRewards/Contracts/StakingDualRewardsFactory/target/wasm32-unknown-unknown/release/deps/staking_rewards_factory-34fff67f52bf122d.wasm: staking_rewards_factory/bin/staking_rewards_factory.rs
-
-/home/hammad/work/CaperLabs-QuickSwapCore-StakingRewards/Contracts/StakingDualRewardsFactory/target/wasm32-unknown-unknown/release/deps/staking_rewards_factory-34fff67f52bf122d.d: staking_rewards_factory/bin/staking_rewards_factory.rs
-
-staking_rewards_factory/bin/staking_rewards_factory.rs:

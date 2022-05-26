@@ -1,4 +1,4 @@
-# Casperlabs-StakingRewardsFactory-JsClient
+# Casperlabs-StakingRewardsFactoryAndStakingDualRewards-JsClient
 
 This repo has the code to deploy all the functions of StakingRewardsFactory contracts using StakingRewardsFactory contract hash and StakingDualRewards contracts using StakingDualRewards contract hash
 

@@ -15,7 +15,7 @@ Use the script file in package.json to perform the testing
 Use the following commands to perform testing
 ```
 npm run test:stakingrewardsfactoryinstalled
-
+npm run test:stakingdualrewardsinstalled
 
 ```
 

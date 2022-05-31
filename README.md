@@ -1,1 +1,1 @@
-# CaperLabs-QuickSwapCore-StakingRewards
+# CasperLabs-StakingRewards

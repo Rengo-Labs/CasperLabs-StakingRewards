@@ -2,20 +2,20 @@ use crate::alloc::string::ToString;
 use crate::data::{self};
 use alloc::collections::BTreeMap;
 use alloc::{string::String, vec::Vec};
+use casper_contract::contract_api::runtime;
 use casper_contract::contract_api::storage;
-use casper_contract::{contract_api::runtime};
-use casper_types::{ ApiError, ContractPackageHash, Key, URef};
+use casper_types::{ApiError, ContractPackageHash, Key, URef};
 use contract_utils::{ContractContext, ContractStorage};
 
 //Errors
 #[repr(u16)]
 pub enum Error {
-    //Owner address cannot be 0
-    OwnerAddressZero = 0,
-    //You must be nominated before you can accept ownership
-    NominatedBeforeAccept = 1,
-    //Only the contract owner may perform this action
-    OnlyContractOwner = 2,
+    /// Owner address cannot be 0
+    OwnerAddressZero = 20001,
+    /// You must be nominated before you can accept ownership
+    NominatedBeforeAccept = 20002,
+    /// Only the contract owner may perform this action
+    OnlyContractOwner = 20003,
 }
 
 impl From<Error> for ApiError {

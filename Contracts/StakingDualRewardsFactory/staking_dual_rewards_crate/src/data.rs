@@ -240,3 +240,6 @@ pub fn set_package_hash(package_hash: ContractPackageHash) {
 pub fn get_package_hash() -> ContractPackageHash {
     get_key(SELF_PACKAGE_HASH).unwrap_or_revert()
 }
+pub fn js_ret<T: CLTyped + ToBytes>(ret: T) {
+    set_key(RESULT, ret);
+}

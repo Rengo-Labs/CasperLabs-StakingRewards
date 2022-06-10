@@ -9,7 +9,7 @@ use casper_contract::{
 };
 use casper_types::{
     runtime_args, ContractHash, ContractPackageHash,Key,RuntimeArgs, URef, U256, CLValue};
-use staking_dual_rewards_crate::{entry_points,STAKINGDUALREWARDS};
+use staking_dual_rewards_crate::{entry_points,data,STAKINGDUALREWARDS};
 use contract_utils::{ContractContext, OnChainContractStorage};
 use dual_rewards_distribution_recipient_crate::DUALREWARDSDISTRIBUTIONRECIPIENT;
 use owned_crate::{self, OWNED};
@@ -73,7 +73,63 @@ fn constructor() {
         package_hash,
     );
 }
-
+//data
+#[no_mangle]
+fn rewards_token_a() {
+    runtime::ret(CLValue::from_t(data::get_rewards_token_a()).unwrap_or_revert());
+}
+#[no_mangle]
+fn rewards_token_b() {
+    runtime::ret(CLValue::from_t(data::get_rewards_token_b()).unwrap_or_revert());
+}
+#[no_mangle]
+fn staking_token() {
+    runtime::ret(CLValue::from_t(data::get_staking_token()).unwrap_or_revert());
+}
+#[no_mangle]
+fn period_finish() {
+    runtime::ret(CLValue::from_t(data::get_period_finish()).unwrap_or_revert());
+}
+#[no_mangle]
+fn reward_rate_a() {
+    runtime::ret(CLValue::from_t(data::get_reward_rate_a()).unwrap_or_revert());
+}
+#[no_mangle]
+fn reward_rate_b() {
+    runtime::ret(CLValue::from_t(data::get_reward_rate_b()).unwrap_or_revert());
+}
+#[no_mangle]
+fn last_update_time() {
+    runtime::ret(CLValue::from_t(data::get_last_update_time()).unwrap_or_revert());
+}
+#[no_mangle]
+fn reward_per_token_a_stored() {
+    runtime::ret(CLValue::from_t(data::get_reward_per_token_a_stored()).unwrap_or_revert());
+}
+#[no_mangle]
+fn reward_per_token_b_stored() {
+    runtime::ret(CLValue::from_t(data::get_reward_per_token_b_stored()).unwrap_or_revert());
+}
+#[no_mangle]
+fn user_reward_per_token_a_paid() {
+    let owner: Key = runtime::get_named_arg("owner");
+    runtime::ret(CLValue::from_t(data::UserRewardPerTokenAPaid::instance().get(&owner)).unwrap_or_revert());
+}
+#[no_mangle]
+fn user_reward_per_token_b_paid() {
+    let owner: Key = runtime::get_named_arg("owner");
+    runtime::ret(CLValue::from_t(data::UserRewardPerTokenBPaid::instance().get(&owner)).unwrap_or_revert());
+}
+#[no_mangle]
+fn rewards_a() {
+    let owner: Key = runtime::get_named_arg("owner");
+    runtime::ret(CLValue::from_t(data::RewardsA::instance().get(&owner)).unwrap_or_revert());
+}
+#[no_mangle]
+fn rewards_b() {
+    let owner: Key = runtime::get_named_arg("owner");
+    runtime::ret(CLValue::from_t(data::RewardsB::instance().get(&owner)).unwrap_or_revert());
+}
 #[no_mangle]
 fn set_paused() {
     let paused: bool = runtime::get_named_arg("paused");

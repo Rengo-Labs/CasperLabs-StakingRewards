@@ -1,10 +1,13 @@
 use crate::staking_rewards_factory_instance::STAKINGREWARDSFACTORYInstance;
 use casper_types::{
-    account::AccountHash, runtime_args, ContractPackageHash, Key, RuntimeArgs, U256,
+    account::AccountHash, runtime_args, ContractPackageHash, Key, RuntimeArgs, U256, bytesrepr::Bytes,
 };
 use test_env::{TestContract, TestEnv};
+use casper_types::bytesrepr::{FromBytes};
+use staking_rewards_factory_crate::data::*;
 //Const
 pub const TEN_E_NINE:u128 = 1000000000;
+
 //For Reward Token A
 fn deploy_reward_token_a(env: &TestEnv, owner: AccountHash) -> TestContract {
     TestContract::new(
@@ -68,8 +71,9 @@ fn test_deploy() {
 }
 #[test]
 fn test_deploy_1() {
-    let (env, owner, staking_reward_factory_instance) = deploy();
-    let staking_reward_factory_instance = STAKINGREWARDSFACTORYInstance::contract_instance(staking_reward_factory_instance);
+    let (env, owner, staking_reward_factory) = deploy();
+    
+    let staking_reward_factory_instance = STAKINGREWARDSFACTORYInstance::contract_instance(staking_reward_factory.clone());
     let staking_token = deploy_staking_token(&env, owner);
     let reward_token_a = deploy_reward_token_a(&env, owner);
     let reward_token_b = deploy_reward_token_b(&env, owner);
@@ -77,6 +81,15 @@ fn test_deploy_1() {
     let reward_token_a_key = Key::Hash(reward_token_a.package_hash());
     let reward_token_b_key = Key::Hash(reward_token_b.package_hash());
     staking_reward_factory_instance.deploy(owner, Key::Account(owner), staking_token_key, reward_token_a_key,reward_token_b_key,U256::from(TEN_E_NINE * 10),U256::from(TEN_E_NINE * 10),U256::from(TEN_E_NINE * 2));
+    //let result:Bytes = staking_reward_factory.query_dictionary("staking_rewards_info", staking_token_key.to_string()).unwrap_or_default();
+    // let result1:String = staking_token_key.to_string();
+    // let v:Bytes = staking_reward_factory_instance.result();
+    // let info: StakingRewardsInfo =
+    //     StakingRewardsInfo::from_bytes(&v)
+    //                 .unwrap()
+    //                 .0;
+    //println!("{:?}",result1);
+    //println!("{:?}",info);
 }
 #[test]
 fn test_update() {

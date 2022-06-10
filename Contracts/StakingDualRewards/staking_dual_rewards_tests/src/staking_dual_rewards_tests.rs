@@ -108,12 +108,12 @@ fn test_deploy() {
 fn total_supply() {
     let (_, owner, instance, proxy) = deploy();
     let proxy = STAKINGDUALREWARDSInstance::contract_instance(proxy);
-    let staking_dual_rewards_instance = STAKINGDUALREWARDSInstance::contract_instance(instance);
+    let staking_dual_rewards = STAKINGDUALREWARDSInstance::contract_instance(instance);
     let amount: U256 = U256::from(TEN_E_NINE * 2);
-    staking_dual_rewards_instance.stake(owner, amount);
+    staking_dual_rewards.stake(owner, amount);
     proxy.total_supply(owner);
-    let v: U256 = proxy.result();
-    println!("{:?}", v);
+    // let v: U256 = proxy.result();
+    // println!("{:?}", v);
 }
 #[test]
 fn balance_of() {
@@ -123,8 +123,8 @@ fn balance_of() {
     let amount: U256 = U256::from(TEN_E_NINE * 2);
     staking_dual_rewards_instance.stake(owner, amount);
     proxy.balance_of(owner, Key::Account(owner));
-    let v: U256 = proxy.result();
-    println!("{:?}", v);
+    // let v: U256 = proxy.result();
+    // println!("{:?}", v);
 }
 #[test]
 fn last_time_reward_applicable() {
@@ -146,8 +146,8 @@ fn reward_per_token_a() {
         100.into(),
     );
     proxy.reward_per_token_a(owner);
-    let v1: U256 = proxy.result();
-    println!("{:?}", v1);
+    // let v1: U256 = proxy.result();
+    // println!("{:?}", v1);
 }
 #[test]
 fn reward_per_token_b() {
@@ -163,8 +163,8 @@ fn reward_per_token_b() {
         100.into(),
     );
     proxy.reward_per_token_b(owner);
-    let v1: U256 = proxy.result();
-    println!("{:?}", v1);
+    // let v1: U256 = proxy.result();
+    // println!("{:?}", v1);
 }
 #[test]
 fn earned_a() {
@@ -180,8 +180,8 @@ fn earned_a() {
         200.into(),
     );
     proxy.earned_a(owner, Key::Account(owner));
-    let v: U256 = proxy.result();
-    println!("{:?}", v);
+    // let v: U256 = proxy.result();
+    // println!("{:?}", v);
 }
 #[test]
 fn earned_b() {
@@ -197,15 +197,15 @@ fn earned_b() {
         200.into(),
     );
     proxy.earned_b(owner, Key::Account(owner));
-    let v: U256 = proxy.result();
-    println!("{:?}", v);
+    // let v: U256 = proxy.result();
+    // println!("{:?}", v);
 }
 #[test]
 fn stake() {
     let (_, owner, instance, _) = deploy();
-    let staking_dual_rewards_instance = STAKINGDUALREWARDSInstance::contract_instance(instance);
+    let staking_dual_rewards = STAKINGDUALREWARDSInstance::contract_instance(instance.clone());
     let amount: U256 = U256::from(TEN_E_NINE * 20);
-    staking_dual_rewards_instance.stake(owner, amount);
+    staking_dual_rewards.stake(owner, amount);
 }
 #[test]
 fn withdraw() {

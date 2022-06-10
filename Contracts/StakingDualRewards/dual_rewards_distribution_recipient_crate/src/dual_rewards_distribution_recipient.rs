@@ -6,8 +6,8 @@ use contract_utils::{ContractContext, ContractStorage};
 
 #[repr(u16)]
 pub enum Error {
-    // Caller is not DualRewardsDistribution contract
-    NotDualRewardsDistribution = 0,
+    /// Caller is not DualRewardsDistribution contract
+    NotDualRewardsDistribution = 17,
 }
 
 impl From<Error> for ApiError {

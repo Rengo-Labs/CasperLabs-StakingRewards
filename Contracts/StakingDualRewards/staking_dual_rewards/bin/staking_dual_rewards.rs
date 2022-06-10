@@ -16,7 +16,7 @@ use dual_rewards_distribution_recipient_crate::DUALREWARDSDISTRIBUTIONRECIPIENT;
 use owned_crate::{self, OWNED};
 use pausable_crate::{self, PAUSABLE};
 use reentrancy_guard_crate::REENTRANCYGUARD;
-use staking_dual_rewards_crate::{self, STAKINGDUALREWARDS};
+use staking_dual_rewards_crate::{self,data, STAKINGDUALREWARDS};
 #[derive(Default)]
 struct StakingDualRewards(OnChainContractStorage);
 
@@ -74,7 +74,64 @@ fn constructor() {
         package_hash,
     );
 }
-
+//data
+#[no_mangle]
+fn rewards_token_a() {
+    runtime::ret(CLValue::from_t(data::get_rewards_token_a()).unwrap_or_revert());
+}
+#[no_mangle]
+fn rewards_token_b() {
+    runtime::ret(CLValue::from_t(data::get_rewards_token_b()).unwrap_or_revert());
+}
+#[no_mangle]
+fn staking_token() {
+    runtime::ret(CLValue::from_t(data::get_staking_token()).unwrap_or_revert());
+}
+#[no_mangle]
+fn period_finish() {
+    runtime::ret(CLValue::from_t(data::get_period_finish()).unwrap_or_revert());
+}
+#[no_mangle]
+fn reward_rate_a() {
+    runtime::ret(CLValue::from_t(data::get_reward_rate_a()).unwrap_or_revert());
+}
+#[no_mangle]
+fn reward_rate_b() {
+    runtime::ret(CLValue::from_t(data::get_reward_rate_b()).unwrap_or_revert());
+}
+#[no_mangle]
+fn last_update_time() {
+    runtime::ret(CLValue::from_t(data::get_last_update_time()).unwrap_or_revert());
+}
+#[no_mangle]
+fn reward_per_token_a_stored() {
+    runtime::ret(CLValue::from_t(data::get_reward_per_token_a_stored()).unwrap_or_revert());
+}
+#[no_mangle]
+fn reward_per_token_b_stored() {
+    runtime::ret(CLValue::from_t(data::get_reward_per_token_b_stored()).unwrap_or_revert());
+}
+#[no_mangle]
+fn user_reward_per_token_a_paid() {
+    let owner: Key = runtime::get_named_arg("owner");
+    runtime::ret(CLValue::from_t(data::UserRewardPerTokenAPaid::instance().get(&owner)).unwrap_or_revert());
+}
+#[no_mangle]
+fn user_reward_per_token_b_paid() {
+    let owner: Key = runtime::get_named_arg("owner");
+    runtime::ret(CLValue::from_t(data::UserRewardPerTokenBPaid::instance().get(&owner)).unwrap_or_revert());
+}
+#[no_mangle]
+fn rewards_a() {
+    let owner: Key = runtime::get_named_arg("owner");
+    runtime::ret(CLValue::from_t(data::RewardsA::instance().get(&owner)).unwrap_or_revert());
+}
+#[no_mangle]
+fn rewards_b() {
+    let owner: Key = runtime::get_named_arg("owner");
+    runtime::ret(CLValue::from_t(data::RewardsB::instance().get(&owner)).unwrap_or_revert());
+}
+//functions
 #[no_mangle]
 fn set_paused() {
     let paused: bool = runtime::get_named_arg("paused");
@@ -130,33 +187,40 @@ fn earned_b() {
 #[no_mangle]
 fn total_supply_js_client() {
     let ret: U256 = StakingDualRewards::default().total_supply();
+    data::js_ret(ret)
 }
 #[no_mangle]
 fn balance_of_js_client() {
     let account: Key = runtime::get_named_arg("account");
     let ret: U256 = StakingDualRewards::default().balance_of(account);
+    data::js_ret(ret)
 }
 #[no_mangle]
 fn last_time_reward_applicable_js_client() {
     let ret: U256 = StakingDualRewards::default().last_time_reward_applicable();
+    data::js_ret(ret)
 }
 #[no_mangle]
 fn reward_per_token_a_js_client() {
     let ret: U256 = StakingDualRewards::default().reward_per_token_a();
+    data::js_ret(ret)
 }
 #[no_mangle]
 fn reward_per_token_b_js_client() {
     let ret: U256 = StakingDualRewards::default().reward_per_token_b();
+    data::js_ret(ret)
 }
 #[no_mangle]
 fn earned_a_js_client() {
     let account: Key = runtime::get_named_arg("account");
     let ret: U256 = StakingDualRewards::default().earned_a(account);
+    data::js_ret(ret)
 }
 #[no_mangle]
 fn earned_b_js_client() {
     let account: Key = runtime::get_named_arg("account");
     let ret: U256 = StakingDualRewards::default().earned_b(account);
+    data::js_ret(ret)
 }
 #[no_mangle]
 fn stake() {
@@ -205,6 +269,97 @@ fn get_entry_points() -> EntryPoints {
         ],
         <()>::cl_type(),
         EntryPointAccess::Groups(vec![Group::new("constructor")]),
+        EntryPointType::Contract,
+    ));
+    entry_points.add_entry_point(EntryPoint::new(
+        "rewards_token_a",
+        vec![],
+        <()>::cl_type(),
+        EntryPointAccess::Public,
+        EntryPointType::Contract,
+    ));
+    entry_points.add_entry_point(EntryPoint::new(
+        "rewards_token_b",
+        vec![],
+        <()>::cl_type(),
+        EntryPointAccess::Public,
+        EntryPointType::Contract,
+    ));
+    entry_points.add_entry_point(EntryPoint::new(
+        "staking_token",
+        vec![],
+        <()>::cl_type(),
+        EntryPointAccess::Public,
+        EntryPointType::Contract,
+    ));
+    entry_points.add_entry_point(EntryPoint::new(
+        "period_finish",
+        vec![],
+        <()>::cl_type(),
+        EntryPointAccess::Public,
+        EntryPointType::Contract,
+    ));
+    entry_points.add_entry_point(EntryPoint::new(
+        "reward_rate_a",
+        vec![],
+        <()>::cl_type(),
+        EntryPointAccess::Public,
+        EntryPointType::Contract,
+    ));
+    entry_points.add_entry_point(EntryPoint::new(
+        "reward_rate_b",
+        vec![],
+        <()>::cl_type(),
+        EntryPointAccess::Public,
+        EntryPointType::Contract,
+    ));
+    entry_points.add_entry_point(EntryPoint::new(
+        "last_update_time",
+        vec![],
+        <()>::cl_type(),
+        EntryPointAccess::Public,
+        EntryPointType::Contract,
+    ));
+    entry_points.add_entry_point(EntryPoint::new(
+        "reward_per_token_a_stored",
+        vec![],
+        <()>::cl_type(),
+        EntryPointAccess::Public,
+        EntryPointType::Contract,
+    ));
+    entry_points.add_entry_point(EntryPoint::new(
+        "reward_per_token_b_stored",
+        vec![],
+        <()>::cl_type(),
+        EntryPointAccess::Public,
+        EntryPointType::Contract,
+    ));
+    entry_points.add_entry_point(EntryPoint::new(
+        "user_reward_per_token_a_paid",
+        vec![Parameter::new("owner", Key::cl_type())],
+        <()>::cl_type(),
+        EntryPointAccess::Public,
+        EntryPointType::Contract,
+    ));
+    entry_points.add_entry_point(EntryPoint::new(
+        "user_reward_per_token_b_paid",
+        vec![Parameter::new("owner", Key::cl_type())],
+        <()>::cl_type(),
+        EntryPointAccess::Public,
+        EntryPointType::Contract,
+    ));
+    entry_points.add_entry_point(EntryPoint::new(
+        "rewards_a",
+        vec![Parameter::new("owner", Key::cl_type())],
+        <()>::cl_type(),
+        EntryPointAccess::Public,
+        EntryPointType::Contract,
+    ));
+    entry_points.add_entry_point(EntryPoint::new(
+        "rewards_b",
+        vec![Parameter::new("owner", Key::cl_type())],
+        <()>::cl_type(),
+        EntryPointAccess::Public,
         EntryPointType::Contract,
     ));
     entry_points.add_entry_point(EntryPoint::new(
@@ -280,49 +435,49 @@ fn get_entry_points() -> EntryPoints {
     entry_points.add_entry_point(EntryPoint::new(
         "total_supply_js_client",
         vec![],
-        U256::cl_type(),
+        <()>::cl_type(),
         EntryPointAccess::Public,
         EntryPointType::Contract,
     ));
     entry_points.add_entry_point(EntryPoint::new(
         "balance_of_js_client",
         vec![Parameter::new("account", Key::cl_type())],
-        U256::cl_type(),
+        <()>::cl_type(),
         EntryPointAccess::Public,
         EntryPointType::Contract,
     ));
     entry_points.add_entry_point(EntryPoint::new(
         "last_time_reward_applicable_js_client",
         vec![],
-        U256::cl_type(),
+        <()>::cl_type(),
         EntryPointAccess::Public,
         EntryPointType::Contract,
     ));
     entry_points.add_entry_point(EntryPoint::new(
         "reward_per_token_a_js_client",
         vec![],
-        U256::cl_type(),
+        <()>::cl_type(),
         EntryPointAccess::Public,
         EntryPointType::Contract,
     ));
     entry_points.add_entry_point(EntryPoint::new(
         "reward_per_token_b_js_client",
         vec![],
-        U256::cl_type(),
+        <()>::cl_type(),
         EntryPointAccess::Public,
         EntryPointType::Contract,
     ));
     entry_points.add_entry_point(EntryPoint::new(
         "earned_a_js_client",
         vec![Parameter::new("account", Key::cl_type())],
-        U256::cl_type(),
+        <()>::cl_type(),
         EntryPointAccess::Public,
         EntryPointType::Contract,
     ));
     entry_points.add_entry_point(EntryPoint::new(
         "earned_b_js_client",
         vec![Parameter::new("account", Key::cl_type())],
-        U256::cl_type(),
+        <()>::cl_type(),
         EntryPointAccess::Public,
         EntryPointType::Contract,
     ));

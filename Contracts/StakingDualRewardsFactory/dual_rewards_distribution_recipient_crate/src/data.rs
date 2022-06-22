@@ -30,4 +30,3 @@ pub fn set_dual_rewards_distribution(dual_rewards_distribution: Key) {
 pub fn get_dual_rewards_distribution() -> Key {
     get_key(DUALREWARDSDISTRIBUTION).unwrap_or_revert()
 }
-

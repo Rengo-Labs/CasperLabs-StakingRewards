@@ -10,10 +10,10 @@ use owned_crate::{self, data as owned, OWNED};
 //Errors
 #[repr(u16)]
 pub enum Error {
-    //Owner must be set
-    OwnerMustSet = 0,
-    //This action cannot be performed while the contract is paused
-    ContractPaused = 1,
+    /// Owner must be set
+    OwnerMustSet = 20101,
+    /// This action cannot be performed while the contract is paused
+    ContractPaused = 20102,
 }
 
 impl From<Error> for ApiError {

@@ -2,7 +2,7 @@ use casper_contract::{
     contract_api::{runtime, storage},
     unwrap_or_revert::UnwrapOrRevert,
 };
-use casper_types::{bytesrepr::ToBytes, CLTyped,U256};
+use casper_types::{bytesrepr::ToBytes, CLTyped, U256};
 use contract_utils::{get_key, set_key};
 use core::convert::TryInto;
 
@@ -30,4 +30,3 @@ pub fn set_guard_counter(guard_counter: U256) {
 pub fn get_guard_counter() -> U256 {
     get_key(GUARD_COUNTER).unwrap_or_revert()
 }
-

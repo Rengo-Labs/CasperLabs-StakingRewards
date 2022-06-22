@@ -17,9 +17,4 @@ pub mod key_names {
     pub const TOTAL_SUPPLY: &str = "total_supply";
     pub const DOMAIN_SEPARATOR: &str = "domain_separator";
     pub const PERMIT_TYPE_HASH: &str = "permit_type_hash";
-
-    //  misc
-    pub const PATH: &str = "path";
-    pub const CONSTANTS_DICT: &str = "constants_dict";
-    pub const OWNER: &str = "owner";
 }

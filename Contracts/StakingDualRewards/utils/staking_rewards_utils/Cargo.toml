@@ -7,8 +7,8 @@ authors = ["Muhammad Talha Dar<muhammadtalhadar@scytalelabs.com>"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-casper-contract = "1.4.3"
-casper-types = "1.4.4"
+casper-contract = "1.4.4"
+casper-types = "1.5.0"
 casper_types_derive = "0.1.0"
 contract-utils = {path = "../contract-utils"}
 renvm-sig = "0.1.1"

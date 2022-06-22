@@ -7,26 +7,26 @@ use casper_contract::contract_api::storage;
 use casper_contract::{contract_api::runtime, unwrap_or_revert::UnwrapOrRevert};
 use casper_types::bytesrepr::{FromBytes, ToBytes};
 use casper_types::{runtime_args, ApiError, ContractPackageHash, Key, RuntimeArgs, URef, U256};
-use contract_utils::{ContractContext, ContractStorage};
+use contract_utils::{ContractContext, ContractStorage, set_key};
 use owned_crate::{self,OWNED};
 use staking_dual_rewards_crate::{self,entry_points};
 //Errors
 #[repr(u16)]
 pub enum Error {
     //StakingRewardsFactory::constructor: genesis too soon
-    GenesisTooSoon = 18,
+    GenesisTooSoon = 20401,
     //Invalid reward token(s)
-    InvalidTokens =19,
+    InvalidTokens =20402,
     //StakingRewardsFactory::deploy: already deployed
-    StakingRewardsFactoryAlreadyDeploy = 20,
+    StakingRewardsFactoryAlreadyDeploy = 20403,
     //StakingRewardsFactory::update: not deployed
-    StakingRewardsFactoryUpdateNotDeploy = 21,
+    StakingRewardsFactoryUpdateNotDeploy = 20404,
     // StakingRewardsFactory::notifyRewardAmounts: called before any deploys
-    CalledBeforeAnyDeploys = 22,
+    CalledBeforeAnyDeploys = 20405,
     // StakingRewardsFactory::notifyRewardAmount: not ready
-    NotifyRewardAmountNotReady= 23,
+    NotifyRewardAmountNotReady= 20406,
     //StakingRewardsFactory::notifyRewardAmount: not deployed
-    NotifyRewardAmountNotDeploy=24,
+    NotifyRewardAmountNotDeploy=20407,
 }
 
 impl From<Error> for ApiError {
@@ -177,10 +177,6 @@ pub trait STAKINGREWARDSFACTORY<Storage: ContractStorage>:
                     "amount" => reward_amount_a
                 },
             );
-            match ret {
-                Ok(()) => {}
-                Err(e) => runtime::revert(ApiError::User(e as u16)),
-            }
             // For RewardTokenB
             let ret: Result<(), u32> = runtime::call_versioned_contract(
                 info.rewards_token_b
@@ -194,10 +190,6 @@ pub trait STAKINGREWARDSFACTORY<Storage: ContractStorage>:
                     "amount" => reward_amount_b
                 },
             );
-            match ret {
-                Ok(()) => {}
-                Err(e) => runtime::revert(ApiError::User(e as u16)),
-            }
             let () = runtime::call_versioned_contract(
                 info.staking_rewards
                     .into_hash()
@@ -206,8 +198,8 @@ pub trait STAKINGREWARDSFACTORY<Storage: ContractStorage>:
                 None,
                 "notify_reward_amount_sdr",
                 runtime_args! {
-                    "reward_a" => info.reward_amount_a,
-                    "reward_b" => info.reward_amount_b,
+                    "reward_a" => reward_amount_a,
+                    "reward_b" => reward_amount_b,
                     "rewards_duration" => duration
                 },
             );
@@ -227,9 +219,5 @@ pub trait STAKINGREWARDSFACTORY<Storage: ContractStorage>:
                 "amount" => amount
             },
         );
-        match ret {
-            Ok(()) => {}
-            Err(e) => runtime::revert(ApiError::User(e as u16)),
-        }
     }
 }

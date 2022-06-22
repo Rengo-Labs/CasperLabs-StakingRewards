@@ -18,7 +18,7 @@ pub const RESULT: &str = "result";
 
 //Struct
 
-#[derive(Clone, CLTyped, ToBytes, FromBytes)]
+#[derive(Clone, CLTyped, ToBytes, FromBytes,Debug)]
 pub struct StakingRewardsInfo {
     pub staking_rewards: Key,
     pub rewards_token_a: Key,
@@ -74,7 +74,7 @@ pub fn ZERO_ADDRESS() -> Key {
 }
 //Dict
 
-pub const STAKING_TOKENS_DICT: &str = "staking_tokens_paid";
+pub const STAKING_TOKENS_DICT: &str = "staking_tokens";
 pub struct StakingTokens {
     dict: Dict,
 }
@@ -90,12 +90,12 @@ impl StakingTokens {
         Dict::init(STAKING_TOKENS_DICT)
     }
 
-    pub fn get(&self, owner: &U256) -> Key {
-        self.dict.get(owner.to_string().as_str()).unwrap_or_revert()
+    pub fn get(&self, counter: &U256) -> Key {
+        self.dict.get(counter.to_string().as_str()).unwrap_or_revert()
     }
 
-    pub fn set(&self, owner: &U256, value: Key) {
-        self.dict.set(owner.to_string().as_str(), value);
+    pub fn set(&self, counter: &U256, value: Key) {
+        self.dict.set(counter.to_string().as_str(), value);
     }
 }
 
@@ -139,4 +139,7 @@ pub fn set_package_hash(package_hash: ContractPackageHash) {
 
 pub fn get_package_hash() -> ContractPackageHash {
     get_key(SELF_PACKAGE_HASH).unwrap_or_revert()
+}
+pub fn js_ret<T: CLTyped + ToBytes>(ret: T) {
+    set_key(RESULT, ret);
 }

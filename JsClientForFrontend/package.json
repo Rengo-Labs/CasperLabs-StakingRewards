@@ -1,0 +1,27 @@
+{
+  "name": "StakingRewardsFactoryAndStakingDualRewardsJsClientForFrontend",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "test:stakingrewardsfactoryinstalled": "ts-node StakingRewardsFactory/test/installed.ts",
+    "test:stakingdualrewardsinstalled": "ts-node StakingDualRewards/test/installed.ts"
+  },
+  "engine": {
+    "node": "16.14.0",
+    "npm": "8.5.3"
+  },
+  "dependencies": {
+    "axios": "^0.24.0",
+    "blakejs": "^1.1.1",
+    "casper-js-sdk": "^2.7.5",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "dotenv": "^10.0.0",
+    "prettier": "^2.3.2",
+    "ts-node": "^10.1.0",
+    "ts-results": "^3.3.0",
+    "tslint": "^5.12.1",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^4.6.3"
+  }
+}

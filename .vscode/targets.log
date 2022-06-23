@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri Jun 17 22:03:27 2022
+# Make data base, printed on Thu Jun 23 20:45:08 2022
 
 # Variables
 
@@ -32,8 +32,6 @@ XDG_SESSION_TYPE = x11
 VSCODE_LOG_NATIVE = false
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
-# environment
-IM_CONFIG_PHASE = 1
 # automatic
 @D = $(patsubst %/,%,$(dir $@))
 # environment
@@ -43,7 +41,7 @@ GDMSESSION = ubuntu
 # environment
 XMODIFIERS = @im=ibus
 # makefile
-CURDIR := /home/saad/Desktop/CaperLabs-StakingRewards
+CURDIR := /home/saad/Downloads/CaperLabs-StakingRewards
 # makefile
 SHELL = /bin/sh
 # environment
@@ -51,9 +49,7 @@ VTE_VERSION = 6003
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
 # environment
-_ = /usr/bin/code
-# environment
-JOURNAL_STREAM = 8:47418
+JOURNAL_STREAM = 8:42972
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # makefile
@@ -61,7 +57,7 @@ MAKEFILE_LIST :=
 # automatic
 @F = $(notdir $@)
 # environment
-GIO_LAUNCHED_DESKTOP_FILE = /usr/share/applications/code.desktop
+IM_CONFIG_PHASE = 1
 # environment
 USERNAME = saad
 # environment
@@ -69,17 +65,19 @@ MAKELEVEL := 0
 # environment
 XDG_DATA_DIRS = /usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop
 # environment
-DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus,guid=83d2b90b59e5163fee399c5762a6a9ea
+DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus,guid=0ec834a9e8d478bef63a906462afee73
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-MANAGERPID = 1439
+_ = /usr/bin/code
+# environment
+MANAGERPID = 1477
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
 # environment
 LC_NAME = en_US.UTF-8
 # environment
-VSCODE_CWD = /home/saad/Desktop/CaperLabs-StakingRewards
+VSCODE_CWD = /home/saad/Downloads/CaperLabs-StakingRewards
 # default
 MAKE_HOST := x86_64-pc-linux-gnu
 # environment
@@ -87,9 +85,7 @@ PATH = /home/saad/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-GJS_DEBUG_OUTPUT = stderr
-# environment
-SESSION_MANAGER = local/Muhammad-Saad-Majeed:@/tmp/.ICE-unix/1655,unix/Muhammad-Saad-Majeed:/tmp/.ICE-unix/1655
+SESSION_MANAGER = local/Muhammad-Saad-Majeed:@/tmp/.ICE-unix/1692,unix/Muhammad-Saad-Majeed:/tmp/.ICE-unix/1692
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -99,7 +95,7 @@ VSCODE_LOG_STACK = false
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-INVOCATION_ID = d94b64d6d0874db397c2f956d6c2906b
+INVOCATION_ID = cb28fdbed2354b3499f17ac2a0b166e1
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -108,8 +104,6 @@ LS_COLORS = rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:
 XDG_SESSION_DESKTOP = ubuntu
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
-# environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 108523
 # automatic
 %F = $(notdir $%)
 # environment
@@ -117,11 +111,11 @@ DISPLAY = :0
 # environment
 VSCODE_PIPE_LOGGING = true
 # environment
-PWD = /home/saad/Desktop/CaperLabs-StakingRewards
+PWD = /home/saad/Downloads/CaperLabs-StakingRewards
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 1614
+SSH_AGENT_PID = 1653
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
@@ -135,7 +129,7 @@ LESSCLOSE = /usr/bin/lesspipe %s %s
 # environment
 VSCODE_CLI = 1
 # environment
-VSCODE_CODE_CACHE_PATH = /home/saad/.config/Code/CachedData/c3511e6c69bb39013c4a4b7b9566ec1ca73fc4d5
+VSCODE_CODE_CACHE_PATH = /home/saad/.config/Code/CachedData/30d9c6cd9483b2cc586687151bcbcd635f373630
 # environment
 LOGNAME = saad
 # environment
@@ -165,7 +159,7 @@ SHLVL = 1
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-94a1d362-d950-4bf1-b13d-927fa951ca7c.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-b5b6390f-eaaf-4155-b545-1f03f46dba21.sock
 # default
 MAKE_VERSION := 4.2.1
 # environment
@@ -187,7 +181,7 @@ MAKE_COMMAND := make
 # automatic
 *F = $(notdir $*)
 # environment
-VSCODE_IPC_HOOK = /run/user/1000/vscode-5261ece5-1.67.2-main.sock
+VSCODE_IPC_HOOK = /run/user/1000/vscode-5261ece5-1.68.1-main.sock
 # makefile
 MAKEFLAGS = pqrR
 # environment
@@ -217,13 +211,11 @@ LC_ALL = C
 # environment
 DBUS_STARTER_BUS_TYPE = session
 # environment
-GJS_DEBUG_TOPICS = JS ERROR;JS LOG
-# environment
-GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/f3ede6c4_25fd_4659_be4a_673bf4e1955c
+GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/2bbd869b_65fe_4a48_b97f_b7b34a8ba94b
 # automatic
 ^F = $(notdir $^)
 # environment
-GNOME_TERMINAL_SERVICE = :1.9858
+GNOME_TERMINAL_SERVICE = :1.13565
 # default
 SUFFIXES := 
 # environment
@@ -243,11 +235,11 @@ LANG = C
 # environment
 TERM = xterm-256color
 # environment
-VSCODE_PID = 108523
+VSCODE_PID = 275777
 # environment
-DBUS_STARTER_ADDRESS = unix:path=/run/user/1000/bus,guid=83d2b90b59e5163fee399c5762a6a9ea
+DBUS_STARTER_ADDRESS = unix:path=/run/user/1000/bus,guid=0ec834a9e8d478bef63a906462afee73
 # variable set hash-table stats:
-# Load=117/1024=11%, Rehash=0, Collisions=21/139=15%
+# Load=113/1024=11%, Rehash=0, Collisions=18/135=13%
 
 # Pattern-specific Variable Values
 
@@ -255,9 +247,9 @@ DBUS_STARTER_ADDRESS = unix:path=/run/user/1000/bus,guid=83d2b90b59e5163fee399c5
 
 # Directories
 
-# . (device 66309, inode 4594806): 9 files, no impossibilities.
+# . (device 66309, inode 4475851): 12 files, no impossibilities.
 
-# 9 files, no impossibilities in 1 directories.
+# 12 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -308,12 +300,12 @@ GNUmakefile:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 17 / storage = 160 B / avg = 9 B
-# current buf: size = 8162 B / used = 160 B / count = 17 / avg = 9 B
+# strcache buffers: 1 (0) / strings = 20 / storage = 207 B / avg = 10 B
+# current buf: size = 8162 B / used = 207 B / count = 20 / avg = 10 B
 
-# strcache performance: lookups = 20 / hit rate = 15%
+# strcache performance: lookups = 23 / hit rate = 13%
 # hash-table stats:
-# Load=17/8192=0%, Rehash=0, Collisions=1/20=5%
-# Finished Make data base on Fri Jun 17 22:03:27 2022
+# Load=20/8192=0%, Rehash=0, Collisions=1/23=4%
+# Finished Make data base on Thu Jun 23 20:45:08 2022
 
  

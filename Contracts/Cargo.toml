@@ -1,0 +1,26 @@
+[workspace]
+
+members = [
+  "owned_crate",
+  # ERC20
+  "erc20/erc20",
+  "erc20/erc20-crate",
+  "erc20/erc20-proxy",
+  "erc20/erc20-tests",
+  "dual_rewards_distribution_recipient_crate",
+  "pausable_crate",
+  "reentrancy_guard_crate",
+  # Staking Dual Rewards
+  "staking-dual-rewards/staking_dual_rewards",
+  "staking-dual-rewards/staking_dual_rewards_crate",
+  "staking-dual-rewards/staking_dual_rewards_tests",
+  "staking-dual-rewards/test_contract",
+  # Staking Dual Rewards Factory
+  "staking-dual-rewards-factory/staking_rewards_factory",
+  "staking-dual-rewards-factory/staking_rewards_factory_crate",
+  "staking-dual-rewards-factory/staking_rewards_factory_tests",
+]
+
+[profile.release]
+codegen-units = 1
+lto = true

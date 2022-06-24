@@ -1,0 +1,21 @@
+[package]
+name = "erc20"
+version = "0.2.0"
+authors = ["Muhammad Adrees <muhammad.adrees@scytalelabs.com>"]
+edition = "2018"
+
+[dependencies]
+casper-contract = "1.4.4"
+casper-types = "1.5.0"
+contract-utils = { path = "../../utils/contract-utils" }
+erc20-crate = { path = "../erc20-crate" }
+
+[[bin]]
+name = "erc20-token"
+path = "bin/erc20_token.rs"
+bench = false
+doctest = false
+test = false
+
+[features]
+default = ["casper-contract/std", "casper-types/std"]

@@ -7,7 +7,7 @@ use casper_contract::contract_api::storage;
 use casper_contract::{contract_api::runtime, unwrap_or_revert::UnwrapOrRevert};
 use casper_types::bytesrepr::{FromBytes, ToBytes};
 use casper_types::{runtime_args, ApiError, ContractPackageHash, Key, RuntimeArgs, URef, U256};
-use contract_utils::{ContractContext, ContractStorage};
+use contract_utils::{ContractContext, ContractStorage, set_key};
 use owned_crate::{self,OWNED};
 use staking_dual_rewards_crate::{self,entry_points};
 //Errors

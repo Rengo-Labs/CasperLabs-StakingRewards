@@ -8,13 +8,17 @@ use casper_contract::{
     unwrap_or_revert::UnwrapOrRevert,
 };
 use casper_types::{
-    runtime_args, ContractHash, ContractPackageHash,Key,RuntimeArgs, URef, U256, CLValue};
-use staking_dual_rewards_crate::{entry_points,data::{self, js_ret},STAKINGDUALREWARDS};
+    runtime_args, CLValue, ContractHash, ContractPackageHash, Key, RuntimeArgs, URef, U256,
+};
 use contract_utils::{ContractContext, OnChainContractStorage};
 use dual_rewards_distribution_recipient_crate::DUALREWARDSDISTRIBUTIONRECIPIENT;
 use owned_crate::{self, OWNED};
 use pausable_crate::{self, PAUSABLE};
 use reentrancy_guard_crate::REENTRANCYGUARD;
+use staking_dual_rewards_crate::{
+    data::{self, js_ret},
+    entry_points, STAKINGDUALREWARDS,
+};
 #[derive(Default)]
 struct StakingDualRewards(OnChainContractStorage);
 
@@ -52,7 +56,6 @@ impl StakingDualRewards {
         )
     }
 }
-
 
 #[no_mangle]
 fn constructor_sdr() {
@@ -113,12 +116,16 @@ fn reward_per_token_b_stored() {
 #[no_mangle]
 fn user_reward_per_token_a_paid() {
     let owner: Key = runtime::get_named_arg("owner");
-    runtime::ret(CLValue::from_t(data::UserRewardPerTokenAPaid::instance().get(&owner)).unwrap_or_revert());
+    runtime::ret(
+        CLValue::from_t(data::UserRewardPerTokenAPaid::instance().get(&owner)).unwrap_or_revert(),
+    );
 }
 #[no_mangle]
 fn user_reward_per_token_b_paid() {
     let owner: Key = runtime::get_named_arg("owner");
-    runtime::ret(CLValue::from_t(data::UserRewardPerTokenBPaid::instance().get(&owner)).unwrap_or_revert());
+    runtime::ret(
+        CLValue::from_t(data::UserRewardPerTokenBPaid::instance().get(&owner)).unwrap_or_revert(),
+    );
 }
 #[no_mangle]
 fn rewards_a() {
@@ -259,8 +266,11 @@ fn call() {
     if !runtime::has_key(&format!("{}_package_hash", contract_name)) {
         // Build new package with initial a first version of the contract.
         let (package_hash, access_token) = storage::create_contract_package_at_hash();
-        let (contract_hash, _) =
-            storage::add_contract_version(package_hash, entry_points::get_entry_points(), Default::default());
+        let (contract_hash, _) = storage::add_contract_version(
+            package_hash,
+            entry_points::get_entry_points(),
+            Default::default(),
+        );
         // Prepare constructor args
         let owner: Key = runtime::get_named_arg("owner");
         let dual_rewards_distribution: Key = runtime::get_named_arg("dual_rewards_distribution");
@@ -285,8 +295,12 @@ fn call() {
                 .unwrap_or_revert();
 
         // Call the constructor entry point
-        let _: () =
-            runtime::call_versioned_contract(package_hash, None, "constructor_sdr", constructor_args);
+        let _: () = runtime::call_versioned_contract(
+            package_hash,
+            None,
+            "constructor_sdr",
+            constructor_args,
+        );
 
         // Remove all URefs from the constructor group, so no one can call it for the second time.
         let mut urefs = BTreeSet::new();
@@ -324,8 +338,11 @@ fn call() {
                 .unwrap()
                 .into();
 
-        let (contract_hash, _): (ContractHash, _) =
-            storage::add_contract_version(package_hash, entry_points::get_entry_points(), Default::default());
+        let (contract_hash, _): (ContractHash, _) = storage::add_contract_version(
+            package_hash,
+            entry_points::get_entry_points(),
+            Default::default(),
+        );
 
         // update contract hash
         runtime::put_key(

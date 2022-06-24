@@ -26,7 +26,7 @@ pub enum Error {
     /// Cannot reduce existing period
     CannotReduce = 20304,
     /// Provided reward-A too high
-    RewardATooHigh =20305,
+    RewardATooHigh = 20305,
     /// Provided reward-B too high
     RewardBTooHigh = 20306,
     /// Cannot withdraw the staking token
@@ -73,7 +73,6 @@ pub enum Error {
     ArithmaticError20 = 20327,
     /// Arithmatic Error 21
     ArithmaticError21 = 20328,
-
 }
 
 impl From<Error> for ApiError {
@@ -373,8 +372,16 @@ pub trait STAKINGDUALREWARDS<Storage: ContractStorage>:
             runtime::revert(ApiError::from(Error::CannotReduce));
         }
         if U256::from(blocktime) >= data::get_period_finish() {
-            data::set_reward_rate_a(reward_a.checked_div(rewards_duration).unwrap_or_revert_with(Error::ArithmaticError10));
-            data::set_reward_rate_b(reward_b.checked_div(rewards_duration).unwrap_or_revert_with(Error::ArithmaticError11));
+            data::set_reward_rate_a(
+                reward_a
+                    .checked_div(rewards_duration)
+                    .unwrap_or_revert_with(Error::ArithmaticError10),
+            );
+            data::set_reward_rate_b(
+                reward_b
+                    .checked_div(rewards_duration)
+                    .unwrap_or_revert_with(Error::ArithmaticError11),
+            );
         } else {
             let remaining: U256 = data::get_period_finish()
                 .checked_sub(U256::from(blocktime))
@@ -417,7 +424,9 @@ pub trait STAKINGDUALREWARDS<Storage: ContractStorage>:
             },
         );
         if !(data::get_reward_rate_a()
-            <= balance_a.checked_div(rewards_duration).unwrap_or_revert_with(Error::ArithmaticError19))
+            <= balance_a
+                .checked_div(rewards_duration)
+                .unwrap_or_revert_with(Error::ArithmaticError19))
         {
             runtime::revert(ApiError::from(Error::RewardATooHigh));
         }
@@ -433,7 +442,9 @@ pub trait STAKINGDUALREWARDS<Storage: ContractStorage>:
             },
         );
         if !(data::get_reward_rate_b()
-            <= balance_b.checked_div(rewards_duration).unwrap_or_revert_with(Error::ArithmaticError20))
+            <= balance_b
+                .checked_div(rewards_duration)
+                .unwrap_or_revert_with(Error::ArithmaticError20))
         {
             runtime::revert(ApiError::from(Error::RewardBTooHigh));
         }

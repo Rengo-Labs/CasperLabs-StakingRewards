@@ -1,0 +1,8 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/saad/CaperLabs-StakingRewards/Contracts'
+rustup target add wasm32-unknown-unknown
+make: Leaving directory '/home/saad/CaperLabs-StakingRewards/Contracts'
+ 
+Makefile:26: warning: overriding recipe for target 'copy-wasm-file-staking-rewards-factory'
+Makefile:24: warning: ignoring old recipe for target 'copy-wasm-file-staking-rewards-factory'
+

@@ -1,9 +1,7 @@
 use crate::staking_rewards_factory_instance::STAKINGREWARDSFACTORYInstance;
-use casper_types::bytesrepr::FromBytes;
 use casper_types::{
     account::AccountHash, runtime_args, ContractPackageHash, Key, RuntimeArgs, U256,
 };
-use staking_rewards_factory_crate::data::*;
 use test_env::{TestContract, TestEnv};
 //Const
 pub const TEN_E_NINE: u128 = 1000000000;

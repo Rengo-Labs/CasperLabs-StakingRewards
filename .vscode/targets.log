@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Thu Jun 23 20:28:34 2022
+# Make data base, printed on Fri Jun 24 17:56:41 2022
 
 # Variables
 
@@ -159,7 +159,7 @@ SHLVL = 1
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-69ea35fc-34d9-40e8-b01e-d5057dca1eac.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-c4833d36-494b-411b-be96-c4d8cbf2cd69.sock
 # default
 MAKE_VERSION := 4.2.1
 # environment
@@ -211,11 +211,11 @@ LC_ALL = C
 # environment
 DBUS_STARTER_BUS_TYPE = session
 # environment
-GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/c8b8f29c_36d0_46a5_9d1e_a2eaa244cd13
+GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/784c3628_9dd5_40a3_bb65_9960abb41d04
 # automatic
 ^F = $(notdir $^)
 # environment
-GNOME_TERMINAL_SERVICE = :1.13565
+GNOME_TERMINAL_SERVICE = :1.15331
 # default
 SUFFIXES := 
 # environment
@@ -235,7 +235,7 @@ LANG = C
 # environment
 TERM = xterm-256color
 # environment
-VSCODE_PID = 275777
+VSCODE_PID = 338184
 # environment
 DBUS_STARTER_ADDRESS = unix:path=/run/user/1000/bus,guid=0ec834a9e8d478bef63a906462afee73
 # variable set hash-table stats:
@@ -247,7 +247,7 @@ DBUS_STARTER_ADDRESS = unix:path=/run/user/1000/bus,guid=0ec834a9e8d478bef63a906
 
 # Directories
 
-# . (device 66309, inode 14682964): 12 files, no impossibilities.
+# . (device 66309, inode 15339320): 12 files, no impossibilities.
 
 # 12 files, no impossibilities in 1 directories.
 
@@ -292,6 +292,7 @@ GNUmakefile:
 #  Failed to be updated.
 
 # files hash-table stats:
+ 
 # Load=6/1024=1%, Rehash=0, Collisions=0/15=0%
 # VPATH Search Paths
 
@@ -300,12 +301,11 @@ GNUmakefile:
 # No general ('VPATH' variable) search path.
 
 # strcache buffers: 1 (0) / strings = 20 / storage = 207 B / avg = 10 B
- 
 # current buf: size = 8162 B / used = 207 B / count = 20 / avg = 10 B
 
 # strcache performance: lookups = 23 / hit rate = 13%
 # hash-table stats:
 # Load=20/8192=0%, Rehash=0, Collisions=1/23=4%
-# Finished Make data base on Thu Jun 23 20:28:34 2022
+# Finished Make data base on Fri Jun 24 17:56:41 2022
 
  
